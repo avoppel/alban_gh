@@ -25,7 +25,7 @@ this_project_folder = '/home/shared/Weibull_PRF/'
 this_raw_folder = '/home/raw_data/Weibull_PRF/'
 
 sys.path.append( os.environ['ANALYSIS_HOME'] )
-sys.path.append( os.path.join('/home','voppel', 'PRF_2_analysis') )
+sys.path.append( os.path.join('/home', 'voppel', 'PRF_2_analysis') )
 
 # shell()
 	
@@ -48,7 +48,6 @@ from Tools.Projects.Project import *
 # -----------------
 
 subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
-# subject_intials = ['JW', 'EK', 'TK', 'DE', 'BM', 'TN', 'JVS', 'OC', 'JB']
 subjects = ['DvE', 'JWdG', 'MK', 'NM']
 run_arrays = []
 projects = []
@@ -301,7 +300,7 @@ for which_subject in subject_initials:
 		for which_session in sj_session:
 			if which_session == 'JWdG_140714':
 			
-				runWBPRFArray = [
+				subject_run_array = [
 					# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 					{
 						'ID': 1, 'scanType': 'epi_bold', 'condition': '04', 'session': 1,
@@ -448,7 +447,7 @@ for which_subject in subject_initials:
 
 				
 			elif which_session == 'JWdG_050814':
-				runWBPRFArray = [
+				subject_run_array = [
 					# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 					
 					# Note: physiologie van runs 1 t/m 6 missen.
@@ -634,7 +633,7 @@ for which_subject in subject_initials:
 		
 		for which_session in sj_session:
 			if which_session == 'MK_170714':
-				runWBPRFArray = [
+				subject_run_array = [
 					# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 					# Runs 4 en 8 zijn onvolledig (respectievelijk 4 en 1 trials).
 					{
@@ -783,7 +782,7 @@ for which_subject in subject_initials:
 				runWholeSession(subject_run_array, subject_session)
 
 			elif which_session == 'MK_050814':
-				runWBPRFArray = [
+				subject_run_array = [
 					# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 					# Twee extra T1 runs.
 					{
@@ -931,6 +930,11 @@ for which_subject in subject_initials:
 						'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 						'MK_2_WIP_sT13DTFE_P25_S2_3m_SENSE_13_1.nii.gz')
 					},
+					# weird stuff is going on here. Why are there 3 T1 scans?, with just a T1 
+					# why is the file called in ID 11 and ID 13 the same?
+					# There are three files called _13, _15, _17 in the folder.
+					# All 3 look kinda ok to my (very untrained) eye.
+					# just pick one, delete the rest?
 					{
 						'ID': 14, 'scanType': 'T2', 'condition': 'mapper', 'session': 1,
 						'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
@@ -976,7 +980,7 @@ for which_subject in subject_initials:
 		
 		for which_session in sj_session:
 			if which_session == 'NM_060714':
-				runWBPRFArray = [
+				subject_run_array = [
 					# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 					{
 						'ID': 1, 'scanType': 'epi_bold', 'condition': '08', 'session': 1,
@@ -1118,7 +1122,7 @@ for which_subject in subject_initials:
 				runWholeSession(subject_run_array, subject_session)
 
 			elif which_session == 'NM_220714':
-				runWBPRFArray = [
+				subject_run_array = [
 					# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 					{
 						'ID': 1, 'scanType': 'epi_bold', 'condition': '03', 'session': 1,
@@ -1263,14 +1267,8 @@ for which_subject in subject_initials:
 				]
 				runWholeSession(subject_run_array, subject_session)
 
-	
+		
 	# subjects.append(presentSubject)
 	# run_arrays.append(runWBPRFArray)
 	# projects.append(presentProject)
 	# session_dates.append(sessionDate)
-
-
-
-
-
-
