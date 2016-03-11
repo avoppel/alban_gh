@@ -41,10 +41,10 @@ from Tools.Projects.Project import *
 # Comments:       -
 # alle physlog kunnen weg, gaan we niets mee doen. eruit commenten overal.
 # raw behavior zit niet overal -> of alleen in de foute runs?
-# terugbrengen naar 1 run / persoon
-# meer commands toevoegen voor functies.
-# check dat ook de .txt met logfiles meegenomen worden
-#
+# terugbrengen naar 1 run / persoon -> ook de if-statements eruit dus.
+# meer commands toevoegen voor functies. (later, later!)
+# check dat ook de .txt met logfiles meegenomen worden uit de raw mappen.
+# wat betekend de grote line helemaal bovenaan? headlessly?
 # -----------------
 
 subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
@@ -928,11 +928,10 @@ for which_subject in subject_initials:
 					{
 						'ID': 13, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
 						'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
-						'MK_2_WIP_sT13DTFE_P25_S2_3m_SENSE_13_1.nii.gz')
+						'MK_2_WIP_sT13DTFE_P25_S2_3m_SENSE_18_1.nii.gz')
 					},
 					# weird stuff is going on here. Why are there 3 T1 scans?, with just a T1 
-					# why is the file called in ID 11 and ID 13 the same?
-					# There are three files called _13, _15, _17 in the folder.
+					# There are three files called _13,, _17 en 18 in the folder.
 					# All 3 look kinda ok to my (very untrained) eye.
 					# just pick one, delete the rest?
 					{
