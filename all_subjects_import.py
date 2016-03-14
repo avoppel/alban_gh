@@ -26,10 +26,8 @@ this_raw_folder = '/home/raw_data/Weibull_PRF/'
 
 sys.path.append( os.environ['ANALYSIS_HOME'] )
 sys.path.append( os.path.join('/home', 'voppel', 'PRF_2_analysis') )
-
-# shell()
 	
-#import this as a pip project to get it working
+#import this as a pip project to get it working -> Daan
 from PopulationReceptiveFieldMappingSession import *
 
 
@@ -39,12 +37,11 @@ from Tools.Run import *
 from Tools.Projects.Project import *
 # -----------------
 # Comments:       -
-# alle physlog kunnen weg, gaan we niets mee doen. eruit commenten overal.
-# raw behavior zit niet overal -> of alleen in de foute runs?
-# terugbrengen naar 1 run / persoon -> ook de if-statements eruit dus.
-# meer commands toevoegen voor functies. (later, later!)
+# alle physlog kunnen weg, gaan we niets mee doen. (nog steeds doen?)
+# raw behavior zat niet in alle runs; wel in de goede. Toch weg doen?(idem, zie boven?)
 # check dat ook de .txt met logfiles meegenomen worden uit de raw mappen.
-# wat betekend de grote line helemaal bovenaan? headlessly?
+# wat betekend de lange line helemaal bovenaan? headlessly?
+# 2e session dates hieronder zijn bij de runs eruit gecomment. Is dat belangrijk? kiezen toch maar voor 1 run.
 # -----------------
 
 subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
@@ -82,8 +79,6 @@ for which_subject in subject_initials:
 		# ----------------------
 		# Subject information  -
 		# ----------------------
-		#
-		# Note: two sessions per subject, take this into account!
 		
 		initials = 'DvE'
 		firstName = 'DvE'
@@ -95,7 +90,7 @@ for which_subject in subject_initials:
 		presentProject = Project('Weibull_PRF', subject = presentSubject,
 								 base_dir = os.path.join(this_project_folder, 'data'))
 		sessionID = 'Weibull_PRF' + presentSubject.initials
-		sessionDate = datetime.date(2014, 07, 24)
+		# sessionDate = datetime.date(2014, 07, 24)
 		sj_session = 'DvE_240714'
 		
 		subject_session = PopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
@@ -268,8 +263,7 @@ for which_subject in subject_initials:
 		# ----------------------
 		# Subject information  -
 		# ----------------------
-		#
-		# Note: two sessions per subject, take this into account.
+
 		
 		initials = 'JWdG'
 		firstName = 'JWdG'
@@ -450,8 +444,6 @@ for which_subject in subject_initials:
 		# ----------------------
 		# Subject information  -
 		# ----------------------
-		#
-		# Note: two sessions per subject, take this into account.
 		
 		initials = 'MK'
 		firstName = 'MK'
@@ -628,7 +620,7 @@ for which_subject in subject_initials:
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_sT13DTFE_P25_S2_3m_SENSE_18_1.nii.gz')
 			},
-			# weird stuff is going on here. Why are there 3 T1 scans?, with just a T1 
+			# weird stuff is going on here. Why are there 3 T1 scans?
 			# There are three files called _13,, _17 en 18 in the folder.
 			# All 3 look kinda ok to my (very untrained) eye.
 			# just pick one, delete the rest?
