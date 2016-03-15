@@ -90,7 +90,7 @@ for which_subject in subject_initials:
 		presentProject = Project('Weibull_PRF', subject = presentSubject,
 								 base_dir = os.path.join(this_project_folder, 'data'))
 		sessionID = 'Weibull_PRF' + presentSubject.initials
-		# sessionDate = datetime.date(2014, 07, 24)
+		sessionDate = datetime.date(2014, 07, 24)
 		sj_session = 'DvE_240714'
 		
 		subject_session = PopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
