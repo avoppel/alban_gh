@@ -27,7 +27,7 @@ this_raw_folder = '/home/raw_data/Weibull_PRF/'
 sys.path.append( os.environ['ANALYSIS_HOME'] )
 sys.path.append( os.path.join('/home', 'voppel', 'PRF_2_analysis') )
 	
-#import this as a pip project to get it working -> Daan
+#import this as a pip project to get it working -> samen met Daan
 from PopulationReceptiveFieldMappingSession import *
 
 
@@ -36,12 +36,10 @@ from Tools.Subjects.Subject import *
 from Tools.Run import *
 from Tools.Projects.Project import *
 # -----------------
-# Comments:       -
-# alle physlog kunnen weg, gaan we niets mee doen. (nog steeds doen?)
+# Comments / to do
+# alle physlog kunnen weg, gaan we niets mee doen. (nog steeds doen? volgens mij hebben alle runs deze data wel, tot nu toe)
 # raw behavior zat niet in alle runs; wel in de goede. Toch weg doen?(idem, zie boven?)
 # check dat ook de .txt met logfiles meegenomen worden uit de raw mappen.
-# wat betekend de lange line helemaal bovenaan? headlessly?
-# 2e session dates hieronder zijn bij de runs eruit gecomment. Is dat belangrijk? kiezen toch maar voor 1 run.
 # -----------------
 
 subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
@@ -126,7 +124,8 @@ for which_subject in subject_initials:
 				'DvE_1_WIP_pRF02_SENSE_5_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'DvE_240714_run_02_cat_03_stim.txt'),
-									os.path.join(this_raw_folder,initials, sj_session, 'gedrag', 												 'DvE_240714_run_02_cat_03_no_stim.txt')],
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag', 												
+												 'DvE_240714_run_02_cat_03_no_stim.txt')],
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF02.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
