@@ -38,7 +38,3 @@ for i in range (0,len(trialnumber)):
     
 plt.axis([0,600, 0, 500])
 plt.show()
-"""
-er worden 12 trials aangemaakt; daarvan zijn er 4 leeg, 8 met richtingen (?)
-wat zijn de condities? 
-"""
