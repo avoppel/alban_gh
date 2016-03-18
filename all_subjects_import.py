@@ -42,8 +42,10 @@ from Tools.Projects.Project import *
 # check dat ook de .txt met logfiles meegenomen worden uit de raw mappen.
 # -----------------
 
-subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
-subjects = ['DvE', 'JWdG', 'MK', 'NM']
+# subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
+subject_initials = ['DvE']
+# subjects = ['DvE', 'JWdG', 'MK', 'NM']
+subjects = ['DvE']
 run_arrays = []
 projects = []
 session_dates = []
@@ -62,11 +64,10 @@ for which_subject in subject_initials:
 		# Functions to execute -
 		# ----------------------
 
-		session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
-
-
-		# session.motionCorrectFunctionals(use_ref_file=False)
-
+		#session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
+		# ^done for DvE
+		session.motionCorrectFunctionals(use_ref_file=False)
+		# 
 
 	# ----------------------
 	# Initialise session   -
