@@ -25,7 +25,6 @@ from Tools.Projects.Project import *
 from Tools.Sessions.Session import *
 
 from PopulationReceptiveFieldMappingSession import *
-#deze staat nog niet in mn tools
 
 import socket
 
@@ -35,7 +34,6 @@ this_project_folder = '/home/shared/Weibull_PRF/'
 # else:# 'cartesius' in socket.gethost	name():
 # 	this_raw_folder = '/projects/0/pqsh283/raw_data/'
 # 	this_project_folder = '/projects/0/pqsh283/PRF_2'
-	#What do I put here? for some other server I guess. Does it matter?
 	
 # which_subject = 'JB'
 if sys.argv[1] == 'all':

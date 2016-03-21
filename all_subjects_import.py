@@ -25,9 +25,10 @@ this_project_folder = '/home/shared/Weibull_PRF/'
 this_raw_folder = '/home/raw_data/Weibull_PRF/'
 
 sys.path.append( os.environ['ANALYSIS_HOME'] )
-sys.path.append( os.path.join('/home', 'voppel', 'PRF_2_analysis') )
 	
-#import this as a pip project to get it working -> samen met Daan
+sys.path.append( os.path.join('/home', 'voppel', 'PRF_2_analysis') )
+
+
 from PopulationReceptiveFieldMappingSession import *
 
 
@@ -65,9 +66,9 @@ for which_subject in subject_initials:
 		# ----------------------
 
 		#session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
+		# session.motionCorrectFunctionals(use_ref_file=False)
 		# ^done for DvE
-		session.motionCorrectFunctionals(use_ref_file=False)
-		# 
+		session.create_moco_check_gifs()
 
 	# ----------------------
 	# Initialise session   -
