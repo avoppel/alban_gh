@@ -36,11 +36,14 @@ from Tools.Sessions import *
 from Tools.Subjects.Subject import *
 from Tools.Run import *
 from Tools.Projects.Project import *
+from Tools.Sessions.AlbanPRF import WeibullPopulationReceptiveFieldMappingSession
+
+shell()
 # -----------------
 # Comments / to do
 # alle physlog kunnen weg, gaan we niets mee doen. (nog steeds doen? volgens mij hebben alle runs deze data wel, tot nu toe)
 # raw behavior zat niet in alle runs; wel in de goede. Toch weg doen?(idem, zie boven?)
-# check dat ook de .txt met logfiles meegenomen worden uit de raw mappen.
+# check dat ook de .txt met logfiles meegenomen worden uit de raw mappen. *!!!!!!!!!!!!!!!!!!!!!!!!!!!* 
 # -----------------
 
 # subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
@@ -65,10 +68,41 @@ for which_subject in subject_initials:
 		# Functions to execute -
 		# ----------------------
 
-		#session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
+		## SETUP FILES: 
+		# session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
+
+		## WE'LL FIRST MOTION CORRECT THE EPIS TO THEMSELVES
 		# session.motionCorrectFunctionals(use_ref_file=False)
-		# ^done for DvE
-		session.create_moco_check_gifs()
+		# session.create_moco_check_gifs()
+
+		# ## NOW, LET'S FLIRT ALL MEAN MOTION CORRECTED VOLUMES TO THE SESSIONS T2 
+		# # SO THAT WE CAN VISUALLY CHECK WHICH ONE HAS THE LEAST B0 DISTORTION
+		# session.flirt_mean_moco_to_session_T2()
+		# session.create_B0_distortion_check_gifs()
+
+		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
+		# # WE CAN NOW REGISTER TO THE FREESURFER T1
+		# session.registerSession(input_type='target_meanvol_moco_epi')
+
+		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
+		# # WE CAN NOW FLIRT ALL MEAN MOTION CORRECTED EPIS TO THAT EPI
+		# # AND CREATE VISUAL SANITY CHECKS
+		# session.flirt_mean_moco_to_mean_target_EPI()
+		# session.check_EPI_alignment(postFix=['mcf','meanvol','NB','flirted2targetEPI'])
+		# ^ niet nodig, enkele sessie per subject (?)
+		# of niet goed uitgevoerd; de plaatje zijn onduidelijk.
+		
+
+		# # ## FOR THE FINAL TOUCH, WE'LL NOW FNIRT THE MEAN MOTION CORRECTED AND FLIRTED
+		# # EPI TO THE TARGET MEAN MOTION CORRECTED EPI
+		# session.fnirt_mean_moco_to_mean_target_EPI()
+		# session.check_EPI_alignment(postFix=['mcf','meanvol','fnirted2targetEPI'])
+		# ^ done voor DvE
+
+		# # NOW COMBINE MOCO / FLIRT / FNIRT AND APPLY TO ALL DATA
+		# session.applywarp_to_moco_data()
+		# session.create_mean_vol(postFix=['mcf','fnirted'])
+		# session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
 
 	# ----------------------
 	# Initialise session   -
@@ -92,9 +126,11 @@ for which_subject in subject_initials:
 		sessionID = 'Weibull_PRF' + presentSubject.initials
 		sessionDate = datetime.date(2014, 07, 24)
 		sj_session = 'DvE_240714'
-		
-		subject_session = PopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
-													   presentProject, presentSubject, this_project_folder)
+		#subject_session = PopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
+		#											   presentProject, presentSubject, this_project_folder, targetEPIID=3)
+		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
+		 											   presentProject, presentSubject, this_project_folder, targetEPIID=3)
+
 		
 		try:
 			os.mkdir(os.path.join(this_project_folder, 'data', initials))
@@ -118,7 +154,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF01.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE01.edf')				
+				'DvE01.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 2, 'scanType': 'epi_bold', 'condition': '03', 'session': 1,
@@ -131,7 +168,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF02.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE02.edf')				
+				'DvE02.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 3, 'scanType': 'epi_bold', 'condition': '07', 'session': 1,
@@ -144,7 +182,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF03.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE03.edf')				
+				'DvE03.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 4, 'scanType': 'epi_bold', 'condition': '08', 'session': 1,
@@ -157,7 +196,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF04.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE04.edf')		
+				'DvE04.edf'), 
+				'thisSessionT2ID':12,		
 			},
 			{
 				'ID': 5, 'scanType': 'epi_bold', 'condition': '05', 'session': 1,
@@ -170,7 +210,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF05.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE05.edf')				
+				'DvE05.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 6, 'scanType': 'epi_bold', 'condition': '01', 'session': 1,
@@ -183,7 +224,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF06.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE06.edf')				
+				'DvE06.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 7, 'scanType': 'epi_bold', 'condition': '02', 'session': 1,
@@ -196,7 +238,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF07.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE07.edf')				
+				'DvE07.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 8, 'scanType': 'epi_bold', 'condition': '04', 'session': 1,
@@ -209,7 +252,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF08.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE08.edf')				
+				'DvE08.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 9, 'scanType': 'epi_bold', 'condition': '09', 'session': 1,
@@ -222,7 +266,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF09.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE09.edf')				
+				'DvE09.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 10, 'scanType': 'epi_bold', 'condition': '10', 'session': 1,
@@ -235,7 +280,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_pRF10.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'DvE10.edf')				
+				'DvE10.edf'), 
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 11, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
