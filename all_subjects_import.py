@@ -38,7 +38,6 @@ from Tools.Run import *
 from Tools.Projects.Project import *
 from Tools.Sessions.AlbanPRF import WeibullPopulationReceptiveFieldMappingSession
 
-shell()
 # -----------------
 # Comments / to do
 # alle physlog kunnen weg, gaan we niets mee doen. (nog steeds doen? volgens mij hebben alle runs deze data wel, tot nu toe)
@@ -82,6 +81,10 @@ for which_subject in subject_initials:
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW REGISTER TO THE FREESURFER T1
+		# session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
+		# session.registerSession(input_type='inplane_anat')
+		#oppassen; deze twee zijn pogingen. de originele staat hieronder.
+
 		# session.registerSession(input_type='target_meanvol_moco_epi')
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
@@ -89,20 +92,25 @@ for which_subject in subject_initials:
 		# # AND CREATE VISUAL SANITY CHECKS
 		# session.flirt_mean_moco_to_mean_target_EPI()
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','NB','flirted2targetEPI'])
-		# ^ niet nodig, enkele sessie per subject (?)
-		# of niet goed uitgevoerd; de plaatje zijn onduidelijk.
-		
+
 
 		# # ## FOR THE FINAL TOUCH, WE'LL NOW FNIRT THE MEAN MOTION CORRECTED AND FLIRTED
 		# # EPI TO THE TARGET MEAN MOTION CORRECTED EPI
 		# session.fnirt_mean_moco_to_mean_target_EPI()
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','fnirted2targetEPI'])
-		# ^ done voor DvE
 
 		# # NOW COMBINE MOCO / FLIRT / FNIRT AND APPLY TO ALL DATA
 		# session.applywarp_to_moco_data()
 		# session.create_mean_vol(postFix=['mcf','fnirted'])
 		# session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
+
+		# deze runnen allemaal.
+
+		## MASKS
+		# session.dilate_and_move_func_bet_mask()
+		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = ['retmap_PRF'], cortex = False)
+	 	# session.create_dilated_cortical_mask(dilation_sd = 0.5, label = 'cortex')
+		# session.create_WM_GM_CSF_masks()
 
 	# ----------------------
 	# Initialise session   -
@@ -144,7 +152,7 @@ for which_subject in subject_initials:
 		subject_run_array = [
 			# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 			{
-				'ID': 1, 'scanType': 'epi_bold', 'condition': '06', 'session': 1,
+				'ID': 1, 'scanType': 'epi_bold', 'condition': 'PRF_06', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF01_SENSE_4_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -158,7 +166,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 2, 'scanType': 'epi_bold', 'condition': '03', 'session': 1,
+				'ID': 2, 'scanType': 'epi_bold', 'condition': 'PRF_03', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF02_SENSE_5_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -172,7 +180,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 3, 'scanType': 'epi_bold', 'condition': '07', 'session': 1,
+				'ID': 3, 'scanType': 'epi_bold', 'condition': 'PRF_07', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF03_SENSE_6_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -186,7 +194,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 4, 'scanType': 'epi_bold', 'condition': '08', 'session': 1,
+				'ID': 4, 'scanType': 'epi_bold', 'condition': 'PRF_08', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF04_SENSE_7_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -200,7 +208,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,		
 			},
 			{
-				'ID': 5, 'scanType': 'epi_bold', 'condition': '05', 'session': 1,
+				'ID': 5, 'scanType': 'epi_bold', 'condition': 'PRF_05', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF05_SENSE_9_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -214,7 +222,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 6, 'scanType': 'epi_bold', 'condition': '01', 'session': 1,
+				'ID': 6, 'scanType': 'epi_bold', 'condition': 'PRF_01', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF06_SENSE_10_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -228,7 +236,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 7, 'scanType': 'epi_bold', 'condition': '02', 'session': 1,
+				'ID': 7, 'scanType': 'epi_bold', 'condition': 'PRF_02', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF07_SENSE_11_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -242,7 +250,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 8, 'scanType': 'epi_bold', 'condition': '04', 'session': 1,
+				'ID': 8, 'scanType': 'epi_bold', 'condition': 'PRF_04', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF08_SENSE_13_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -256,7 +264,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 9, 'scanType': 'epi_bold', 'condition': '09', 'session': 1,
+				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_09', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF09_SENSE_14_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -270,7 +278,7 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 10, 'scanType': 'epi_bold', 'condition': '10', 'session': 1,
+				'ID': 10, 'scanType': 'epi_bold', 'condition': 'PRF_10', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_pRF10_SENSE_15_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -284,14 +292,14 @@ for which_subject in subject_initials:
 				'thisSessionT2ID':12,				
 			},
 			{
-				'ID': 11, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
+				'ID': 11, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_sT13DTFE_P25_S2_3m_SENSE_12_1.nii.gz'),
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'DvE_1_T1.phy')
 			},
 			{
-				'ID': 12, 'scanType': 'T2', 'condition': 'mapper', 'session': 1,
+				'ID': 12, 'scanType': 'inplane_anat', 'condition': 'T2_anat', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'DvE_1_WIP_T2W_RetMap_1.25_CLEAR_8_1.nii.gz'),
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
@@ -326,7 +334,7 @@ for which_subject in subject_initials:
 		# sessionDate = datetime.date(2014, 08, 05)
 		sj_session = 'JWdG_140714'
 		
-		subject_session = PopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
+		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
 													   presentProject, presentSubject, this_project_folder)
 		
 		try:
@@ -342,7 +350,7 @@ for which_subject in subject_initials:
 		subject_run_array = [
 			# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 			{
-				'ID': 1, 'scanType': 'epi_bold', 'condition': '04', 'session': 1,
+				'ID': 1, 'scanType': 'epi_bold', 'condition': 'PRF_04', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF01_SENSE_5_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -355,7 +363,7 @@ for which_subject in subject_initials:
 				'jwg1.edf')
 			},
 			{
-				'ID': 2, 'scanType': 'epi_bold', 'condition': '01', 'session': 1,
+				'ID': 2, 'scanType': 'epi_bold', 'condition': 'PRF_01', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF02_SENSE_6_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -368,7 +376,7 @@ for which_subject in subject_initials:
 				'jwg2.edf')
 			},
 			{
-				'ID': 3, 'scanType': 'epi_bold', 'condition': '02', 'session': 1,
+				'ID': 3, 'scanType': 'epi_bold', 'condition': 'PRF_02', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF03_SENSE_7_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -381,7 +389,7 @@ for which_subject in subject_initials:
 				'jwg3.edf')
 			},
 			{
-				'ID': 4, 'scanType': 'epi_bold', 'condition': '09', 'session': 1,
+				'ID': 4, 'scanType': 'epi_bold', 'condition': 'PRF_09', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF04_SENSE_9_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -394,7 +402,7 @@ for which_subject in subject_initials:
 				'jwg4.edf')
 			},
 			{
-				'ID': 5, 'scanType': 'epi_bold', 'condition': '03', 'session': 1,
+				'ID': 5, 'scanType': 'epi_bold', 'condition': 'PRF_03', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF05_SENSE_11_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -407,7 +415,7 @@ for which_subject in subject_initials:
 				'jwg5.edf')
 			},
 			{
-				'ID': 6, 'scanType': 'epi_bold', 'condition': '08', 'session': 1,
+				'ID': 6, 'scanType': 'epi_bold', 'condition': 'PRF_08', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF06_SENSE_12_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -420,7 +428,7 @@ for which_subject in subject_initials:
 				'jwg6.edf')
 			},
 			{
-				'ID': 7, 'scanType': 'epi_bold', 'condition': '07', 'session': 1,
+				'ID': 7, 'scanType': 'epi_bold', 'condition': 'PRF_07', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF07_SENSE_13_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -433,7 +441,7 @@ for which_subject in subject_initials:
 				'jwg7.edf')
 			},
 			{
-				'ID': 8, 'scanType': 'epi_bold', 'condition': '10', 'session': 1,
+				'ID': 8, 'scanType': 'epi_bold', 'condition': 'PRF_10', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF08_SENSE_15_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -446,7 +454,7 @@ for which_subject in subject_initials:
 				'jwg8.edf')
 			},
 			{
-				'ID': 9, 'scanType': 'epi_bold', 'condition': '05', 'session': 1,
+				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_05', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF09_SENSE_17_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -459,7 +467,7 @@ for which_subject in subject_initials:
 				'jwg9.edf')
 			},
 			{
-				'ID': 10, 'scanType': 'epi_bold', 'condition': '06', 'session': 1,
+				'ID': 10, 'scanType': 'epi_bold', 'condition': 'PRF_06', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_pRF10_SENSE_18_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -472,12 +480,12 @@ for which_subject in subject_initials:
 				'jwg10.edf')
 			},
 			{
-				'ID': 11, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
+				'ID': 11, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_sT13DTFE_P25_S2_3m_SENSE_14_1.nii.gz')
 			},
 			{
-				'ID': 12, 'scanType': 'T2', 'condition': 'mapper', 'session': 1,
+				'ID': 12, 'scanType': 'inplane_anat', 'condition': 'T2_anat', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'prf_jwg_WIP_T2W_RetMap_1.25_CLEAR_10_1.nii.gz')
 			},
@@ -506,7 +514,7 @@ for which_subject in subject_initials:
 		# sessionDate = datetime.date(2014, 08, 05)
 		sj_session = 'MK_050814'
 		
-		subject_session = PopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
+		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
 													   presentProject, presentSubject, this_project_folder)
 		
 		try:
@@ -523,7 +531,7 @@ for which_subject in subject_initials:
 			# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 			# Twee extra T1 runs.
 			{
-				'ID': 1, 'scanType': 'epi_bold', 'condition': '07', 'session': 1,
+				'ID': 1, 'scanType': 'epi_bold', 'condition': 'PRF_07', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF01_SENSE_5_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -536,7 +544,7 @@ for which_subject in subject_initials:
 				'MK2_1.edf')
 			},
 			{
-				'ID': 2, 'scanType': 'epi_bold', 'condition': '03', 'session': 1,
+				'ID': 2, 'scanType': 'epi_bold', 'condition': 'PRF_03', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF02_SENSE_6_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -549,7 +557,7 @@ for which_subject in subject_initials:
 				'MK2_2.edf')
 			},
 			{
-				'ID': 3, 'scanType': 'epi_bold', 'condition': '10', 'session': 1,
+				'ID': 3, 'scanType': 'epi_bold', 'condition': 'PRF_10', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF03_SENSE_7_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -562,7 +570,7 @@ for which_subject in subject_initials:
 				'MK2_3.edf')
 			},
 			{
-				'ID': 4, 'scanType': 'epi_bold', 'condition': '02', 'session': 1,
+				'ID': 4, 'scanType': 'epi_bold', 'condition': 'PRF_02', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF04_SENSE_8_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -575,7 +583,7 @@ for which_subject in subject_initials:
 				'MK2_4.edf')
 			},
 			{
-				'ID': 5, 'scanType': 'epi_bold', 'condition': '01', 'session': 1,
+				'ID': 5, 'scanType': 'epi_bold', 'condition': 'PRF_01', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF05_SENSE_10_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -588,7 +596,7 @@ for which_subject in subject_initials:
 				'MK2_5.edf')
 			},
 			{
-				'ID': 6, 'scanType': 'epi_bold', 'condition': '04', 'session': 1,
+				'ID': 6, 'scanType': 'epi_bold', 'condition': 'PRF_04', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF06_SENSE_5_11.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -601,7 +609,7 @@ for which_subject in subject_initials:
 				'MK2_6.edf')
 			},
 			{
-				'ID': 7, 'scanType': 'epi_bold', 'condition': '09', 'session': 1,
+				'ID': 7, 'scanType': 'epi_bold', 'condition': 'PRF_09', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF07_SENSE_12_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -614,7 +622,7 @@ for which_subject in subject_initials:
 				'MK2_7.edf')
 			},
 			{
-				'ID': 8, 'scanType': 'epi_bold', 'condition': '05', 'session': 1,
+				'ID': 8, 'scanType': 'epi_bold', 'condition': 'PRF_05', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF08_SENSE_14_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -627,7 +635,7 @@ for which_subject in subject_initials:
 				'MK2_8.edf')
 			},
 			{
-				'ID': 9, 'scanType': 'epi_bold', 'condition': '08', 'session': 1,
+				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_08', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF09_SENSE_15_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -640,7 +648,7 @@ for which_subject in subject_initials:
 				'MK2_9.edf')
 			},
 			{
-				'ID': 10, 'scanType': 'epi_bold', 'condition': '06', 'session': 1,
+				'ID': 10, 'scanType': 'epi_bold', 'condition': 'PRF_06', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_pRF10_SENSE_16_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -653,17 +661,17 @@ for which_subject in subject_initials:
 				'MK2_10.edf')
 			},
 			{
-				'ID': 11, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
+				'ID': 11, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_sT13DTFE_P25_S2_3m_SENSE_13_1.nii.gz')
 			},
 			{
-				'ID': 12, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
+				'ID': 12, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_sT13DTFE_P25_S2_3m_SENSE_17_1.nii.gz')
 			},
 			{
-				'ID': 13, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
+				'ID': 13, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_sT13DTFE_P25_S2_3m_SENSE_18_1.nii.gz')
 			},
@@ -672,7 +680,7 @@ for which_subject in subject_initials:
 			# All 3 look kinda ok to my (very untrained) eye.
 			# just pick one, delete the rest?
 			{
-				'ID': 14, 'scanType': 'T2', 'condition': 'mapper', 'session': 1,
+				'ID': 14, 'scanType': 'inplane_anat', 'condition': 'T2_anat', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'MK_2_WIP_T2W_RetMap_125_CLEAR_9_1.nii.gz')
 			}
@@ -700,7 +708,7 @@ for which_subject in subject_initials:
 		# sessionDate = datetime.date(2014, 07, 22)
 		sj_session = 'NM_220714'
 		
-		subject_session = PopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
+		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
 													   presentProject, presentSubject, this_project_folder)
 		
 		try:
@@ -714,7 +722,7 @@ for which_subject in subject_initials:
 		subject_run_array = [
 			# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 			{
-				'ID': 1, 'scanType': 'epi_bold', 'condition': '03', 'session': 1,
+				'ID': 1, 'scanType': 'epi_bold', 'condition': 'PRF_03', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF01_SENSE_5_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -727,7 +735,7 @@ for which_subject in subject_initials:
 				'NM01.edf')
 			},
 			{
-				'ID': 2, 'scanType': 'epi_bold', 'condition': '09', 'session': 1,
+				'ID': 2, 'scanType': 'epi_bold', 'condition': 'PRF_09', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF02_SENSE_6_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -740,7 +748,7 @@ for which_subject in subject_initials:
 				'NM02.edf')
 			},
 			{
-				'ID': 3, 'scanType': 'epi_bold', 'condition': '10', 'session': 1,
+				'ID': 3, 'scanType': 'epi_bold', 'condition': 'PRF_10', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF03_SENSE_7_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -753,7 +761,7 @@ for which_subject in subject_initials:
 				'NM03.edf')
 			},
 			{
-				'ID': 4, 'scanType': 'epi_bold', 'condition': '02', 'session': 1,
+				'ID': 4, 'scanType': 'epi_bold', 'condition': 'PRF_02', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF04_SENSE_8_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -766,7 +774,7 @@ for which_subject in subject_initials:
 				'NM04.edf')
 			},
 			{
-				'ID': 5, 'scanType': 'epi_bold', 'condition': '05', 'session': 1,
+				'ID': 5, 'scanType': 'epi_bold', 'condition': 'PRF_05', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF05_SENSE_10_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -779,7 +787,7 @@ for which_subject in subject_initials:
 				'NM05.edf')
 			},
 			{
-				'ID': 6, 'scanType': 'epi_bold', 'condition': '08', 'session': 1,
+				'ID': 6, 'scanType': 'epi_bold', 'condition': 'PRF_08', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF06_SENSE_11_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -792,7 +800,7 @@ for which_subject in subject_initials:
 				'NM06.edf')
 			},
 			{
-				'ID': 7, 'scanType': 'epi_bold', 'condition': '07', 'session': 1,
+				'ID': 7, 'scanType': 'epi_bold', 'condition': 'PRF_07', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF07_SENSE_12_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -805,7 +813,7 @@ for which_subject in subject_initials:
 				'NM07.edf')
 			},
 			{
-				'ID': 8, 'scanType': 'epi_bold', 'condition': '01', 'session': 1,
+				'ID': 8, 'scanType': 'epi_bold', 'condition': 'PRF_01', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF08_SENSE_14_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -818,7 +826,7 @@ for which_subject in subject_initials:
 				'NM08.edf')
 			},
 			{
-				'ID': 9, 'scanType': 'epi_bold', 'condition': '04', 'session': 1,
+				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_04', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF08_SENSE_15_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -831,7 +839,7 @@ for which_subject in subject_initials:
 				'NM09.edf')
 			},
 			{
-				'ID': 10, 'scanType': 'epi_bold', 'condition': '06', 'session': 1,
+				'ID': 10, 'scanType': 'epi_bold', 'condition': 'PRF_06', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_pRF10_SENSE_16_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -844,12 +852,12 @@ for which_subject in subject_initials:
 				'NM10.edf')
 			},
 			{
-				'ID': 11, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
+				'ID': 11, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_sT13DTFE_P25_S2_3m_SENSE_13_1.nii.gz')
 			},
 			{
-				'ID': 12, 'scanType': 'T2', 'condition': 'mapper', 'session': 1,
+				'ID': 12, 'scanType': 'inplane_anat', 'condition': 'T2_anat', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'NM_WIP_T2W_RetMap_1.25_CLEAR_9_1.nii.gz')
 			}
