@@ -104,13 +104,20 @@ for which_subject in subject_initials:
 		# session.create_mean_vol(postFix=['mcf','fnirted'])
 		# session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
 
-		# deze runnen allemaal.
 
 		## MASKS
 		# session.dilate_and_move_func_bet_mask()
 		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = ['retmap_PRF'], cortex = False)
-	 	# session.create_dilated_cortical_mask(dilation_sd = 0.5, label = 'cortex')
-		# session.create_WM_GM_CSF_masks()
+
+		#^ deze runnen allemaal. maar wat doen ze?
+
+	 	# session.create_dilated_cortical_mask(dilation_sd = 0.5, label = 'V1')
+	 	# label veranderen? default was 'cortex'. Dit werkt! voor alle labels doen? ROIs selecteren hierzo?
+
+		session.create_WM_GM_CSF_masks()
+		# uit rest_code.py 
+		# wat doet dit uberhaupt.
+
 
 	# ----------------------
 	# Initialise session   -
