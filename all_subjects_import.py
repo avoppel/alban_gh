@@ -70,6 +70,10 @@ for which_subject in subject_initials:
 		## SETUP FILES: 
 		# session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
 
+		"""
+		nog aan te passen om ook de behavioural files / logger van trial types mee te nemen - die zitten er dacht ik nog niet in.
+		"""
+
 		## WE'LL FIRST MOTION CORRECT THE EPIS TO THEMSELVES
 		# session.motionCorrectFunctionals(use_ref_file=False)
 		# session.create_moco_check_gifs()
@@ -82,24 +86,27 @@ for which_subject in subject_initials:
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW REGISTER TO THE FREESURFER T1
 		# session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
-		# session.registerSession(input_type='inplane_anat')
 
-		############################################################################
-		# oppassen; deze twee zijn pogingen. de originele staat hieronder.
-		# MNI is uitgezet, omdat ik geen rechten heb om te schrijven voor deze folder.
-		# session.registerSession(input_type='target_meanvol_moco_epi')
-		############################################################################
+		"""
+		oppassen; dit is een poging zonder MNI. de originele staat hieronder.
+		MNI is uitgezet, omdat ik geen rechten heb om te schrijven voor deze folder.
+		session.registerSession(input_type='target_meanvol_moco_epi')
+
+		waarom gebruiken we trouwens niet de inplane_anat? omdat we freesurfer gebruiken? iets als:
+		session.registerSession(input_type='inplane_anat', MNI = False)
+
+		"""
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW FLIRT ALL MEAN MOTION CORRECTED EPIS TO THAT EPI
 		# # AND CREATE VISUAL SANITY CHECKS
 		
-		# Debug deze net als de andere
-		session.flirt_mean_moco_to_mean_target_EPI()
+		# session.flirt_mean_moco_to_mean_target_EPI()
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','NB','flirted2targetEPI'])
 
 		# # ## FOR THE FINAL TOUCH, WE'LL NOW FNIRT THE MEAN MOTION CORRECTED AND FLIRTED
 		# # EPI TO THE TARGET MEAN MOTION CORRECTED EPI
+
 		# session.fnirt_mean_moco_to_mean_target_EPI()
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','fnirted2targetEPI'])
 
@@ -108,12 +115,85 @@ for which_subject in subject_initials:
 		# session.create_mean_vol(postFix=['mcf','fnirted'])
 		# session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
 
-
 		## MASKS
 		# session.dilate_and_move_func_bet_mask()
 		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = ['retmap_PRF'], cortex = False)
 
-		#hierna; prfs.
+		"""
+		allemaal gedaan; soms bij de laatste nog wat rare plaatjes (beweging?), maar dit runt allemaal.
+		hierna; prfs.
+		de retmap / PRF folder in labels bestaat nog niet voor NM_290314 en MK_170714_4
+		Deze moeten dus gemaakt worden.
+
+		"""
+		
+
+		#for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
+			## SETUP FIT PARAMETERS:
+			# task_conditions = ['All']#'Stim','Fix','Color','Speed']
+
+		#	mask = 'early_visual'
+		#	postFix = ['mcf','fnirted','sgtf','psc']
+		#	model = 'OG'# OG or DoG
+		#	hrf_type = 'median'
+
+		#	session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,task_conditions=['All'])
+			# session.setup_fit_PRF_on_concatenated_data(
+			# 	mask_file_name = mask, 
+			# 	n_jobs = n_jobs, 
+			# 	postFix = postFix, 
+			# 	plotbool = True,
+			# 	model = model,
+			# 	hrf_type = hrf_type,
+			# 	fit_on_all_data = True,
+			# 	slice_no = slice_no
+			# 	)
+
+			# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
+			# session.convert_to_surf(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['Fix'],sms=[0])
+			# session.combine_surfaces(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['Fix'],sms=[0])
+
+			# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
+			# 	change_type=change_type,run_num=run_num,task_conditions=['Fix','Color','Speed'])
+			# r_squared_threshold = 0.0005 # threshold for which voxels to fit in the non-ALL condition
+			# session.setup_fit_PRF_on_concatenated_data(
+			# 	mask_file_name = mask, 
+			# 	n_jobs = n_jobs, 
+			# 	postFix = postFix, 
+			# 	plotbool = True,
+			# 	model = model,
+			# 	hrf_type = 'median',
+			# 	fit_on_all_data = False,
+			# 	r_squared_threshold = r_squared_threshold,
+			# 	slice_no = slice_no,
+			# 	change_type = change_type,
+			# 	run_num = run_num,
+			# 	)	
+
+			# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions = ['Fix','Color','Speed'],hrf_type=hrf_type)
+
+			# CV:
+			# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions = ['Fix','Color','Speed'],hrf_type=hrf_type,change_type='leave_one_out')
+			# session.cross_predictions_concatenated_data(mask,postFix,model,hrf_type,n_jobs,run_num)
+			# session.combine_predictions_concatenated_data(hrf_type,model,postFix,mask)
+
+
+			# session.compare_fits(mask)
+			
+			# task_conditions = ['Stim']#['All','Fix','Color','Speed']
+			# session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
+			# session.fit_diagnostics(task_conditions = task_conditions, maskfile=mask, ecc_thresh=[0.0,7.0],model=model, 
+			# 						hists = False, 
+			# 						eccen_surf = True, 
+			# 						r_squared_threshold = 0.2,
+			# 						condition_comparison_plots = False, 
+			# 						correlation_of_ecc_fwhm_diff_plot = False,
+			# 						polar_plot = False,
+			# 						simple_size_plot = False,
+			# 						polar_imshow=False,
+			# 						fba_attent_corr_plots=False,
+			# 						postFix=postFix)
+
 	# ----------------------
 	# Initialise session   -
 	# ----------------------
