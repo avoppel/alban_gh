@@ -83,16 +83,20 @@ for which_subject in subject_initials:
 		# # WE CAN NOW REGISTER TO THE FREESURFER T1
 		# session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
 		# session.registerSession(input_type='inplane_anat')
-		#oppassen; deze twee zijn pogingen. de originele staat hieronder.
 
+		############################################################################
+		# oppassen; deze twee zijn pogingen. de originele staat hieronder.
+		# MNI is uitgezet, omdat ik geen rechten heb om te schrijven voor deze folder.
 		# session.registerSession(input_type='target_meanvol_moco_epi')
+		############################################################################
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW FLIRT ALL MEAN MOTION CORRECTED EPIS TO THAT EPI
 		# # AND CREATE VISUAL SANITY CHECKS
-		# session.flirt_mean_moco_to_mean_target_EPI()
+		
+		# Debug deze net als de andere
+		session.flirt_mean_moco_to_mean_target_EPI()
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','NB','flirted2targetEPI'])
-
 
 		# # ## FOR THE FINAL TOUCH, WE'LL NOW FNIRT THE MEAN MOTION CORRECTED AND FLIRTED
 		# # EPI TO THE TARGET MEAN MOTION CORRECTED EPI
@@ -109,16 +113,7 @@ for which_subject in subject_initials:
 		# session.dilate_and_move_func_bet_mask()
 		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = ['retmap_PRF'], cortex = False)
 
-		#^ deze runnen allemaal. maar wat doen ze?
-
-	 	# session.create_dilated_cortical_mask(dilation_sd = 0.5, label = 'V1')
-	 	# label veranderen? default was 'cortex'. Dit werkt! voor alle labels doen? ROIs selecteren hierzo?
-
-		session.create_WM_GM_CSF_masks()
-		# uit rest_code.py 
-		# wat doet dit uberhaupt.
-
-
+		#hierna; prfs.
 	# ----------------------
 	# Initialise session   -
 	# ----------------------
@@ -342,7 +337,7 @@ for which_subject in subject_initials:
 		sj_session = 'JWdG_140714'
 		
 		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
-													   presentProject, presentSubject, this_project_folder)
+													   presentProject, presentSubject, this_project_folder, targetEPIID=3)
 		
 		try:
 			os.mkdir(os.path.join(this_project_folder, 'data', initials))
@@ -522,7 +517,7 @@ for which_subject in subject_initials:
 		sj_session = 'MK_050814'
 		
 		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
-													   presentProject, presentSubject, this_project_folder)
+													   presentProject, presentSubject, this_project_folder, targetEPIID=3)
 		
 		try:
 			os.mkdir(os.path.join(this_project_folder, 'data', initials))
@@ -716,7 +711,7 @@ for which_subject in subject_initials:
 		sj_session = 'NM_220714'
 		
 		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
-													   presentProject, presentSubject, this_project_folder)
+													   presentProject, presentSubject, this_project_folder, targetEPIID=3)
 		
 		try:
 			os.mkdir(os.path.join(this_project_folder, 'data', initials))
