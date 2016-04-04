@@ -213,7 +213,7 @@ for which_subject in which_subjects:
 			model = 'OG'# OG or DoG
 			hrf_type = 'median'
 
-			# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,task_conditions=['All'])
+			session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,task_conditions=['All'])
 			# session.setup_fit_PRF_on_concatenated_data(
 			# 	mask_file_name = mask, 
 			# 	n_jobs = n_jobs, 

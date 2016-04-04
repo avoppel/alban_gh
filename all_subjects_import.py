@@ -71,7 +71,8 @@ for which_subject in subject_initials:
 		# session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
 
 		"""
-		nog aan te passen om ook de behavioural files / logger van trial types mee te nemen - die zitten er dacht ik nog niet in.
+		nog aan te passen om ook de behavioural files / logger van trial types mee te nemen - die zitten er nog niet in. Of, er zitten er een paar in; maar die zijn .dat
+
 		"""
 
 		## WE'LL FIRST MOTION CORRECT THE EPIS TO THEMSELVES
