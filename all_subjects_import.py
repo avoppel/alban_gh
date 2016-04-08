@@ -36,6 +36,7 @@ from Tools.Sessions import *
 from Tools.Subjects.Subject import *
 from Tools.Run import *
 from Tools.Projects.Project import *
+from Tools.Sessions.AlbanPRF import *
 from Tools.Sessions.AlbanPRF import WeibullPopulationReceptiveFieldMappingSession
 
 # -----------------
@@ -68,10 +69,10 @@ for which_subject in subject_initials:
 		# ----------------------
 
 		## SETUP FILES: 
-		# session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
-
+		#session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
 		"""
 		nog aan te passen om ook de behavioural files / logger van trial types mee te nemen - die zitten er nog niet in. Of, er zitten er een paar in; maar die zijn .dat
+		of misschien gebeurt dit pas in de analyse fase?
 
 		"""
 
@@ -87,14 +88,11 @@ for which_subject in subject_initials:
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW REGISTER TO THE FREESURFER T1
 		# session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
-
+		
 		"""
 		oppassen; dit is een poging zonder MNI. de originele staat hieronder.
 		MNI is uitgezet, omdat ik geen rechten heb om te schrijven voor deze folder.
 		session.registerSession(input_type='target_meanvol_moco_epi')
-
-		waarom gebruiken we trouwens niet de inplane_anat? omdat we freesurfer gebruiken? iets als:
-		session.registerSession(input_type='inplane_anat', MNI = False)
 
 		"""
 
@@ -127,18 +125,18 @@ for which_subject in subject_initials:
 		Deze moeten dus gemaakt worden.
 
 		"""
-		
 
 		#for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
 			## SETUP FIT PARAMETERS:
-			# task_conditions = ['All']#'Stim','Fix','Color','Speed']
+			# task_conditions = ['PRF']
 
 		#	mask = 'early_visual'
 		#	postFix = ['mcf','fnirted','sgtf','psc']
 		#	model = 'OG'# OG or DoG
 		#	hrf_type = 'median'
 
-		#	session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,task_conditions=['All'])
+		session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
+							task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
 			# session.setup_fit_PRF_on_concatenated_data(
 			# 	mask_file_name = mask, 
 			# 	n_jobs = n_jobs, 
