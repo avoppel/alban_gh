@@ -137,8 +137,6 @@ for which_subject in subject_initials:
 		session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
 							task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
 		#session.design_matrices_for_averaged_data()
-		#session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
-		# 					task_conditions=['PRF_01'])
 		# # session.setup_fit_PRF_on_concatenated_data(
 		# 	mask_file_name = mask, 
 		# 	n_jobs = n_jobs, 
