@@ -70,11 +70,7 @@ for which_subject in subject_initials:
 
 		## SETUP FILES: 
 		#session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
-		"""
-		nog aan te passen om ook de behavioural files / logger van trial types mee te nemen - die zitten er nog niet in. Of, er zitten er een paar in; maar die zijn .dat
-		of misschien gebeurt dit pas in de analyse fase?
-
-		"""
+		#session.weibull_prf_trialtimes(task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
 
 		## WE'LL FIRST MOTION CORRECT THE EPIS TO THEMSELVES
 		# session.motionCorrectFunctionals(use_ref_file=False)
@@ -134,9 +130,15 @@ for which_subject in subject_initials:
 		#	postFix = ['mcf','fnirted','sgtf','psc']
 		#	model = 'OG'# OG or DoG
 		#	hrf_type = 'median'
+
+
+		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
+		# 					task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
 		session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
-							task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
+					task_conditions=['PRF_01'])
+
 		#session.design_matrices_for_averaged_data()
+
 		# # session.setup_fit_PRF_on_concatenated_data(
 		# 	mask_file_name = mask, 
 		# 	n_jobs = n_jobs, 
