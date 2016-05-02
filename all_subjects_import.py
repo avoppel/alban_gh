@@ -114,41 +114,57 @@ for which_subject in subject_initials:
 		# session.dilate_and_move_func_bet_mask()
 		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = ['retmap_PRF'], cortex = False)
 
-		"""
-		allemaal gedaan; soms bij de laatste nog wat rare plaatjes (beweging?), maar dit runt allemaal.
-		hierna; prfs.
-		de retmap / PRF folder in labels bestaat nog niet voor NM_290314 en MK_170714_4
-		Deze moeten dus gemaakt worden.
 
-		"""
+		## SGTF
+	 	# for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
+			# session.rescaleFunctionals(condition=condition,operations = ['sgtf'],filterFreqs={'highpass':120}, funcPostFix = ['mcf','fnirted'], mask_file = os.path.join(session.stageFolder('processed/mri/masks/anat'), 'bet_mask_dilated.nii.gz'))
+			# session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
 
-		#for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
-			## SETUP FIT PARAMETERS:
-			# task_conditions = ['PRF']
 
-		#	mask = 'early_visual'
-		#	postFix = ['mcf','fnirted','sgtf','psc']
-		#	model = 'OG'# OG or DoG
-		#	hrf_type = 'median'
-
+		## Design Matrices
 
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
 		# 					task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
-		session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
-					task_conditions=['PRF_01'])
+		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
+		# 					task_conditions=['PRF_01'])
 
-		#session.design_matrices_for_averaged_data()
+		# session.design_matrices_for_averaged_data()
 
-		# # session.setup_fit_PRF_on_concatenated_data(
-		# 	mask_file_name = mask, 
-		# 	n_jobs = n_jobs, 
-		# 	postFix = postFix, 
-		# 	plotbool = True,
-		# 	model = model,
-		# 	hrf_type = hrf_type,
-		# 	fit_on_all_data = True,
-		# 	slice_no = slice_no
-		# 	)
+
+		
+		## SETUP FIT PARAMETERS:
+		# for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
+		# moet dit wel in een for loop?
+		# 	#task_conditions = ['PRF']
+		# 	task_conditions = condition
+
+		"""
+		time to start fitting.
+		de retmap / PRF folder in labels bestaat nog niet voor NM_290314 en MK_170714_4
+		Deze moeten dus gemaakt worden. time to get this code running!
+
+		n_jobs = 20 max.
+		"""
+
+
+		n_jobs = 20
+		mask = 'lh.V1' #or any other mask here. visible in FSL
+		postFix = ['mcf','fnirted','sgtf','psc']
+		model = 'OG'# OG or DoG
+		hrf_type = 'canonical' #'median'
+		#slice_no was eerst 0; dan kreeg ik not iterable.
+		slice_no = 12
+
+		session.setup_fit_PRF_on_concatenated_data(
+			mask_file_name = mask, 
+			n_jobs = n_jobs, 
+			postFix = postFix, 
+			plotbool = True,
+			model = model,
+			hrf_type = hrf_type,
+			fit_on_all_data = True,
+			slice_no = slice_no
+			)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
 		# session.convert_to_surf(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['Fix'],sms=[0])
