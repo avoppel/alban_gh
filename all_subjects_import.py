@@ -144,6 +144,10 @@ for which_subject in subject_initials:
 		Deze moeten dus gemaakt worden. time to get this code running!
 
 		n_jobs = 20 max.
+
+		slice_no = 0 werkt niet; not iterable. 1 werkt wel.
+
+		hrf_type is nog onduidelijk.
 		"""
 
 
