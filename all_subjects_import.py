@@ -84,13 +84,7 @@ for which_subject in subject_initials:
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW REGISTER TO THE FREESURFER T1
 		# session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
-		
-		"""
-		oppassen; dit is een poging zonder MNI. de originele staat hieronder.
-		MNI is uitgezet, omdat ik geen rechten heb om te schrijven voor deze folder.
-		session.registerSession(input_type='target_meanvol_moco_epi')
-
-		"""
+		# original version: #	session.registerSession(input_type='target_meanvol_moco_epi')
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW FLIRT ALL MEAN MOTION CORRECTED EPIS TO THAT EPI
@@ -138,26 +132,24 @@ for which_subject in subject_initials:
 		# 	#task_conditions = ['PRF']
 		# 	task_conditions = condition
 
+
 		"""
 		time to start fitting.
-		de retmap / PRF folder in labels bestaat nog niet voor NM_290314 en MK_170714_4
-		Deze moeten dus gemaakt worden. time to get this code running!
-
+		
 		n_jobs = 20 max.
 
-		slice_no = 0 werkt niet; not iterable. 1 werkt wel.
-
-		hrf_type is nog onduidelijk.
+		hrf_type is nog onduidelijk. Median? canonical?
 		"""
 
 
-		n_jobs = 20
+		n_jobs = 1
 		mask = 'lh.V1' #or any other mask here. visible in FSL
 		postFix = ['mcf','fnirted','sgtf','psc']
 		model = 'OG'# OG or DoG
 		hrf_type = 'canonical' #'median'
 		#slice_no was eerst 0; dan kreeg ik not iterable.
-		slice_no = 12
+		#None loopt alle slices.
+		slice_no = 2 
 
 		session.setup_fit_PRF_on_concatenated_data(
 			mask_file_name = mask, 
@@ -167,7 +159,8 @@ for which_subject in subject_initials:
 			model = model,
 			hrf_type = hrf_type,
 			fit_on_all_data = True,
-			slice_no = slice_no
+			slice_no = slice_no,
+			condition_index = np.arange(10),
 			)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
@@ -198,6 +191,27 @@ for which_subject in subject_initials:
 		# session.cross_predictions_concatenated_data(mask,postFix,model,hrf_type,n_jobs,run_num)
 		# session.combine_predictions_concatenated_data(hrf_type,model,postFix,mask)
 
+		## OPTIONAL OTHERS
+
+		# session.combine_rois(rois=['lh.V1','rh.V1'],output_roi = 'V1')
+	 	# session.combine_rois(rois=['lh.V2v','rh.V2d','lh.V2d','rh.V2v'],output_roi = 'V2')
+	 	# session.combine_rois(rois=['lh.V3v','rh.V3d','lh.V3d','rh.V3v'],output_roi = 'V3')
+	 	# session.combine_rois(rois=['lh.V4','rh.V4'],output_roi = 'V4')
+	 	# session.combine_rois(rois=['lh.LO1','rh.LO1','lh.LO2','rh.LO2'],output_roi = 'LO')
+	 	# session.combine_rois(rois=['lh.TO1','rh.TO1','lh.TO2','rh.TO2'],output_roi = 'MT')
+	 	# # session.combine_rois(rois=['lh.V3A','rh.V3A','lh.V3B','rh.V3B'],output_roi = 'V3AB')
+	 	# session.combine_rois(rois=['lh.VO1','rh.VO1','lh.VO2','rh.VO2'],output_roi = 'VO')
+	 	# session.combine_rois(rois=['lh.PHC1','rh.PHC1','lh.PHC2','rh.PHC2'],output_roi = 'PHC')
+	 	# session.combine_rois(rois=['lh.IPS0','rh.IPS0'],output_roi = 'IPS0')
+	 	# session.combine_rois(rois=['lh.IPS1','rh.IPS1'],output_roi = 'IPS1')
+	 	# session.combine_rois(rois=['lh.IPS2','rh.IPS2'],output_roi = 'IPS2')
+	 	# session.combine_rois(rois=['lh.IPS3','rh.IPS3'],output_roi = 'IPS3')
+	 	# session.combine_rois(rois=['lh.IPS4','rh.IPS4'],output_roi = 'IPS4')
+	 	# session.combine_rois(rois=['lh.FEF','rh.FEF'],output_roi = 'FEF')
+		# session.combine_rois(rois=['PHC','MT','IPS','FEF'],output_roi = 'late_visual')
+		# session.inflate_T2s()
+	 	# session.create_combined_label_mask()
+
 
 		# session.compare_fits(mask)
 		
@@ -227,8 +241,8 @@ for which_subject in subject_initials:
 		
 		initials = 'DvE'
 		firstName = 'DvE'
-		standardFSID = 'DE_110412'						# look up
-		birthdate = datetime.date(1989,07,14)					# look up, yyyymmdd
+		standardFSID = 'DE_110412'						
+		birthdate = datetime.date(1989,07,14)					
 		labelFolderOfPreference = 'visual areas'
 		presentSubject = Subject(initials, firstName, birthdate, 
 								 standardFSID, labelFolderOfPreference)
