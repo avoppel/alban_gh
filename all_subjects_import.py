@@ -47,9 +47,9 @@ from Tools.Sessions.AlbanPRF import WeibullPopulationReceptiveFieldMappingSessio
 # -----------------
 
 # subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
-subject_initials = ['DvE']
+subject_initials = ['DvE']# 'JWdG']
 # subjects = ['DvE', 'JWdG', 'MK', 'NM']
-subjects = ['DvE']
+subjects = ['DvE']#, 'JWdG']
 run_arrays = []
 projects = []
 session_dates = []
@@ -68,11 +68,11 @@ for which_subject in subject_initials:
 		# Functions to execute -
 		# ----------------------
 
-		## SETUP FILES: 
-		#session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
-		#session.weibull_prf_trialtimes(task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
+		# ## SETUP FILES: 
+		# session.setupFiles(rawBase = presentSubject.initials, process_eyelink_file = False)
+		# session.weibull_prf_trialtimes(task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
 
-		## WE'LL FIRST MOTION CORRECT THE EPIS TO THEMSELVES
+		# # WE'LL FIRST MOTION CORRECT THE EPIS TO THEMSELVES
 		# session.motionCorrectFunctionals(use_ref_file=False)
 		# session.create_moco_check_gifs()
 
@@ -93,26 +93,26 @@ for which_subject in subject_initials:
 		# session.flirt_mean_moco_to_mean_target_EPI()
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','NB','flirted2targetEPI'])
 
-		# # ## FOR THE FINAL TOUCH, WE'LL NOW FNIRT THE MEAN MOTION CORRECTED AND FLIRTED
-		# # EPI TO THE TARGET MEAN MOTION CORRECTED EPI
+		# # # # ## FOR THE FINAL TOUCH, WE'LL NOW FNIRT THE MEAN MOTION CORRECTED AND FLIRTED
+		# # # # EPI TO THE TARGET MEAN MOTION CORRECTED EPI
 
 		# session.fnirt_mean_moco_to_mean_target_EPI()
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','fnirted2targetEPI'])
 
-		# # NOW COMBINE MOCO / FLIRT / FNIRT AND APPLY TO ALL DATA
-		# session.applywarp_to_moco_data()
-		# session.create_mean_vol(postFix=['mcf','fnirted'])
-		# session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
+		# # # NOW COMBINE MOCO / FLIRT / FNIRT AND APPLY TO ALL DATA
+		# # session.applywarp_to_moco_data()
+		# # session.create_mean_vol(postFix=['mcf','fnirted'])
+		# # session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
 
-		## MASKS
+		# # ## MASKS
 		# session.dilate_and_move_func_bet_mask()
 		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = ['retmap_PRF'], cortex = False)
 
 
-		## SGTF
-	 	# for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
-			# session.rescaleFunctionals(condition=condition,operations = ['sgtf'],filterFreqs={'highpass':120}, funcPostFix = ['mcf','fnirted'], mask_file = os.path.join(session.stageFolder('processed/mri/masks/anat'), 'bet_mask_dilated.nii.gz'))
-			# session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
+		# ## SGTF
+	 # 	for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
+		# 	session.rescaleFunctionals(condition=condition,operations = ['sgtf'],filterFreqs={'highpass':120}, funcPostFix = ['mcf','fnirted'], mask_file = os.path.join(session.stageFolder('processed/mri/masks/anat'), 'bet_mask_dilated.nii.gz'))
+		# 	session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
 
 
 		## Design Matrices
@@ -120,36 +120,26 @@ for which_subject in subject_initials:
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
 		# 					task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
-		# 					task_conditions=['PRF_01'])
+		# 					task_conditions=['PRF_04'])
 
 		# session.design_matrices_for_averaged_data()
 
 
 		
 		## SETUP FIT PARAMETERS:
-		# for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
-		# moet dit wel in een for loop?
-		# 	#task_conditions = ['PRF']
-		# 	task_conditions = condition
 
 
 		"""
-		time to start fitting.
-		
 		n_jobs = 20 max.
-
-		hrf_type is nog onduidelijk. Median? canonical?
 		"""
-
 
 		n_jobs = 1
 		mask = 'lh.V1' #or any other mask here. visible in FSL
 		postFix = ['mcf','fnirted','sgtf','psc']
 		model = 'OG'# OG or DoG
 		hrf_type = 'canonical' #'median'
-		#slice_no was eerst 0; dan kreeg ik not iterable.
 		#None loopt alle slices.
-		slice_no = 2 
+		slice_no = None
 
 		session.setup_fit_PRF_on_concatenated_data(
 			mask_file_name = mask, 
@@ -160,7 +150,9 @@ for which_subject in subject_initials:
 			hrf_type = hrf_type,
 			fit_on_all_data = True,
 			slice_no = slice_no,
-			condition_index = np.arange(10),
+			condition_index = np.array([0]),
+			##this one does them all
+			#condition_index = np.arange(10),
 			)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
@@ -452,7 +444,7 @@ for which_subject in subject_initials:
 		sj_session = 'JWdG_140714'
 		
 		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
-													   presentProject, presentSubject, this_project_folder, targetEPIID=3)
+													   presentProject, presentSubject, this_project_folder, targetEPIID=9)
 		
 		try:
 			os.mkdir(os.path.join(this_project_folder, 'data', initials))
@@ -477,7 +469,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_01.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg1.edf')
+				'jwg1.edf'),
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 2, 'scanType': 'epi_bold', 'condition': 'PRF_01', 'session': 1,
@@ -490,7 +483,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_02.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg2.edf')
+				'jwg2.edf'),
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 3, 'scanType': 'epi_bold', 'condition': 'PRF_02', 'session': 1,
@@ -503,7 +497,9 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_03.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg3.edf')
+				'jwg3.edf'),
+				'thisSessionT2ID':12,				
+
 			},
 			{
 				'ID': 4, 'scanType': 'epi_bold', 'condition': 'PRF_09', 'session': 1,
@@ -516,7 +512,9 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_04.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg4.edf')
+				'jwg4.edf'),
+				'thisSessionT2ID':12,				
+
 			},
 			{
 				'ID': 5, 'scanType': 'epi_bold', 'condition': 'PRF_03', 'session': 1,
@@ -529,7 +527,9 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_05.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg5.edf')
+				'jwg5.edf'),
+				'thisSessionT2ID':12,				
+
 			},
 			{
 				'ID': 6, 'scanType': 'epi_bold', 'condition': 'PRF_08', 'session': 1,
@@ -542,7 +542,9 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_06.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg6.edf')
+				'jwg6.edf'),
+				'thisSessionT2ID':12,				
+
 			},
 			{
 				'ID': 7, 'scanType': 'epi_bold', 'condition': 'PRF_07', 'session': 1,
@@ -555,7 +557,9 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_07.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg7.edf')
+				'jwg7.edf'),
+				'thisSessionT2ID':12,				
+
 			},
 			{
 				'ID': 8, 'scanType': 'epi_bold', 'condition': 'PRF_10', 'session': 1,
@@ -568,7 +572,9 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_08.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg8.edf')
+				'jwg8.edf'),
+				'thisSessionT2ID':12,				
+
 			},
 			{
 				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_05', 'session': 1,
@@ -581,7 +587,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_09.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg9.edf')
+				'jwg9.edf'),
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 10, 'scanType': 'epi_bold', 'condition': 'PRF_06', 'session': 1,
@@ -594,7 +601,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'WBpRF_jwg_10.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'jwg10.edf')
+				'jwg10.edf'),
+				'thisSessionT2ID':12,				
 			},
 			{
 				'ID': 11, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
@@ -658,7 +666,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF01.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_1.edf')
+				'MK2_1.edf'),
+				'thisSessionT2ID':14,				
 			},
 			{
 				'ID': 2, 'scanType': 'epi_bold', 'condition': 'PRF_03', 'session': 1,
@@ -671,7 +680,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF02.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_2.edf')
+				'MK2_2.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 3, 'scanType': 'epi_bold', 'condition': 'PRF_10', 'session': 1,
@@ -684,7 +694,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF03.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_3.edf')
+				'MK2_3.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 4, 'scanType': 'epi_bold', 'condition': 'PRF_02', 'session': 1,
@@ -697,7 +708,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF04.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_4.edf')
+				'MK2_4.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 5, 'scanType': 'epi_bold', 'condition': 'PRF_01', 'session': 1,
@@ -710,12 +722,15 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF05.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_5.edf')
+				'MK2_5.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 6, 'scanType': 'epi_bold', 'condition': 'PRF_04', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
-				'MK_2_WIP_pRF06_SENSE_5_11.nii.gz'),
+				#origineel hier: 	'MK_2_WIP_pRF06_SENSE_5_11.nii.gz'),
+
+				'MK_2_WIP_pRF06_SENSE_11_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 							  					 'MK_050814_run_06_cat_04_stim.txt'),
 								    os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
@@ -723,7 +738,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF06.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_6.edf')
+				'MK2_6.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 7, 'scanType': 'epi_bold', 'condition': 'PRF_09', 'session': 1,
@@ -736,7 +752,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF07.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_7.edf')
+				'MK2_7.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 8, 'scanType': 'epi_bold', 'condition': 'PRF_05', 'session': 1,
@@ -749,7 +766,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF08.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_8.edf')
+				'MK2_8.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_08', 'session': 1,
@@ -762,7 +780,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF09.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_9.edf')
+				'MK2_9.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 10, 'scanType': 'epi_bold', 'condition': 'PRF_06', 'session': 1,
@@ -775,7 +794,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'MK2_pRF10.log'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'MK2_10.edf')
+				'MK2_10.edf'),
+				'thisSessionT2ID':14,
 			},
 			{
 				'ID': 11, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
@@ -849,7 +869,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF01.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM01.edf')
+				'NM01.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 2, 'scanType': 'epi_bold', 'condition': 'PRF_09', 'session': 1,
@@ -862,7 +883,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF02.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM02.edf')
+				'NM02.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 3, 'scanType': 'epi_bold', 'condition': 'PRF_10', 'session': 1,
@@ -875,7 +897,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF03.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM03.edf')
+				'NM03.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 4, 'scanType': 'epi_bold', 'condition': 'PRF_02', 'session': 1,
@@ -888,7 +911,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF04.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM04.edf')
+				'NM04.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 5, 'scanType': 'epi_bold', 'condition': 'PRF_05', 'session': 1,
@@ -901,7 +925,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF05.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM05.edf')
+				'NM05.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 6, 'scanType': 'epi_bold', 'condition': 'PRF_08', 'session': 1,
@@ -914,7 +939,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF06.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM06.edf')
+				'NM06.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 7, 'scanType': 'epi_bold', 'condition': 'PRF_07', 'session': 1,
@@ -927,7 +953,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF07.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM07.edf')
+				'NM07.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 8, 'scanType': 'epi_bold', 'condition': 'PRF_01', 'session': 1,
@@ -940,7 +967,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF08.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM08.edf')
+				'NM08.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_04', 'session': 1,
@@ -953,7 +981,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF09.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM09.edf')
+				'NM09.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 10, 'scanType': 'epi_bold', 'condition': 'PRF_06', 'session': 1,
@@ -966,7 +995,8 @@ for which_subject in subject_initials:
 				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'NM_pRF10.phy'),
 				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
-				'NM10.edf')
+				'NM10.edf'),
+				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 11, 'scanType': 'T1', 'condition': 'T1', 'session': 1,
