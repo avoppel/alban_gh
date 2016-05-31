@@ -120,7 +120,7 @@ for which_subject in subject_initials:
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
 		# 					task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
-		# 					task_conditions=['PRF_04'])
+		# 					task_conditions=['PRF_01'])
 
 		# session.design_matrices_for_averaged_data()
 
@@ -150,9 +150,9 @@ for which_subject in subject_initials:
 			hrf_type = hrf_type,
 			fit_on_all_data = True,
 			slice_no = slice_no,
-			condition_index = np.array([0]),
+			#condition_index = np.array([0]),
 			##this one does them all
-			#condition_index = np.arange(10),
+			condition_index = np.arange(10),
 			)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
@@ -635,8 +635,9 @@ for which_subject in subject_initials:
 		presentProject = Project('Weibull_PRF', subject = presentSubject,
 								 base_dir = os.path.join(this_project_folder, 'data'))
 		sessionID = 'Weibull_PRF' + presentSubject.initials
-		sessionDate = datetime.date(2014, 07, 17)
-		# sessionDate = datetime.date(2014, 08, 05)
+		# sessionDate = datetime.date(2014, 07, 17)
+		# line below cant be 08 because interpreted as octal
+		sessionDate = datetime.date(2014, 8, 05)
 		sj_session = 'MK_050814'
 		
 		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
