@@ -36,14 +36,18 @@ from Tools.Sessions import *
 from Tools.Subjects.Subject import *
 from Tools.Run import *
 from Tools.Projects.Project import *
-from Tools.Sessions.AlbanPRF import *
-from Tools.Sessions.AlbanPRF import WeibullPopulationReceptiveFieldMappingSession
+#from Tools.Sessions.AlbanPRF import *
+#from Tools.Sessions.AlbanPRF import WeibullPopulationReceptiveFieldMappingSession
+from AlbanPRF import *
+from AlbanPRF import WeibullPopulationReceptiveFieldMappingSession
+from ModelExperiment import *
+
 
 # -----------------
 # Comments / to do
 # alle physlog kunnen weg, gaan we niets mee doen. (nog steeds doen? volgens mij hebben alle runs deze data wel, tot nu toe)
 # raw behavior zat niet in alle runs; wel in de goede. Toch weg doen?(idem, zie boven?)
-# check dat ook de .txt met logfiles meegenomen worden uit de raw mappen. *!!!!!!!!!!!!!!!!!!!!!!!!!!!* 
+# check dat ook de .txt met logfiles meegenomen worden uit de raw mappen. 
 # -----------------
 
 # subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
@@ -120,7 +124,7 @@ for which_subject in subject_initials:
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
 		# 					task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
-		# 					task_conditions=['PRF_01'])
+		#  					task_conditions=['PRF_04'])
 
 		# session.design_matrices_for_averaged_data()
 
@@ -150,9 +154,9 @@ for which_subject in subject_initials:
 			hrf_type = hrf_type,
 			fit_on_all_data = True,
 			slice_no = slice_no,
-			#condition_index = np.array([0]),
+			condition_index = np.array([0]),
 			##this one does them all
-			condition_index = np.arange(10),
+			#condition_index = np.arange(10),
 			)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
