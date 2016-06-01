@@ -417,7 +417,7 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 	"""
 	stim_radius lijkt niet veel uit te maken.
 	"""
-	
+
 	# grab data for this fit procedure from shared memory
 	time_course = np.array(data_shared[:,voxels_in_this_slice][:,voxno])
 	hrf_params = np.array(hrf_params_shared[:,voxels_in_this_slice][:,voxno])
@@ -475,7 +475,6 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 		params.add('sigma_center_%s'%conditions[0],value=0.1,min=0.0)#min=0.01 # this means initialization at 0.1 * 7.5 = 0.75 degrees, with minimum of 0.075 degrees
 		params.add('amp_center_%s'%conditions[0],value=0.05,min=0.0)#min=0.01 # this is initialized at 0.001
 
-
 		# surround parameters
 		params.add('delta_sigma_%s'%conditions[0],value=0.4,min=0.0) # this difference parameter ensures that the surround is always larger than the center#,min=0.0000000001
 		params.add('sigma_surround_%s'%conditions[0],value=0.3,expr='sigma_center_%s+delta_sigma_%s'%(conditions[0],conditions[0])) # surround size should roughly be 5 times that of the center
@@ -498,7 +497,6 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 
 		# grab data for this fit procedure from shared memory
 		all_results = np.array(all_results_shared[:,voxels_in_this_slice][:,voxno])
-
 		## initiate parameters:
 		params = Parameters()
 
@@ -541,7 +539,7 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 
 	# initiate model prediction object
 	ssr = np.round(1/(TR/float(n_slices)))
-	
+
 	gpfs = {}
 	for condition in conditions:
 		gpfs[condition] = gpf(design_matrix = raw_design_matrices[condition], max_eccentricity = max_eccentricity, n_pixel_elements = n_pixel_elements_raw, rtime = TR, ssr = ssr,slice_no=slice_no)
@@ -557,7 +555,7 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 				params['sigma_center_%s'%condition].value,hrf_params)[0] * params['amp_center_%s'%condition].value
 			combined_model_prediction +=  gpfs[condition].hrf_model_prediction(params['xo_%s'%condition].value, params['yo_%s'%condition].value, 
 				params['sigma_surround_%s'%condition].value,hrf_params)[0] * params['amp_surround_%s'%condition].value
-	
+			shell()
 		return time_course - combined_model_prediction
 
 	#########################################################################################################################################################################################################################
@@ -567,6 +565,12 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 	# optimize parameters
 	minimize(residual, params, args=(), kws={},method='powell')
 
+	#hier gaat iets een beetje fout? lijkt alsof de return statement van residuals niet meegenomen wordt?
+	#iig is de value van sigma_center weer 0.1
+	#de functie residual hierboven verandert 1x iets aan het cijfer, maar daarna niet meer?
+	#sigma center?
+
+	shell()
 	#########################################################################################################################################################################################################################
 	#### Recreate resulting predictions and PRFs with optimized parameters
 	#########################################################################################################################################################################################################################
