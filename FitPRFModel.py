@@ -417,7 +417,6 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 	"""
 	stim_radius lijkt niet veel uit te maken.
 	"""
-
 	# grab data for this fit procedure from shared memory
 	time_course = np.array(data_shared[:,voxels_in_this_slice][:,voxno])
 	hrf_params = np.array(hrf_params_shared[:,voxels_in_this_slice][:,voxno])
@@ -426,7 +425,7 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 
 	#to plot the time course:
 	#%pylab
-	#shell()
+	#shell
 	# then input:
 	#pl.plot(range(0,3000), time_course)
 
@@ -555,22 +554,19 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 				params['sigma_center_%s'%condition].value,hrf_params)[0] * params['amp_center_%s'%condition].value
 			combined_model_prediction +=  gpfs[condition].hrf_model_prediction(params['xo_%s'%condition].value, params['yo_%s'%condition].value, 
 				params['sigma_surround_%s'%condition].value,hrf_params)[0] * params['amp_surround_%s'%condition].value
-			shell()
 		return time_course - combined_model_prediction
-
 	#########################################################################################################################################################################################################################
 	#### evalute fit
 	#########################################################################################################################################################################################################################
-	
+
 	# optimize parameters
 	minimize(residual, params, args=(), kws={},method='powell')
-
 	#hier gaat iets een beetje fout? lijkt alsof de return statement van residuals niet meegenomen wordt?
 	#iig is de value van sigma_center weer 0.1
-	#de functie residual hierboven verandert 1x iets aan het cijfer, maar daarna niet meer?
-	#sigma center?
+	#de functie residual hierboven verandert 1x iets aan het cijfer, maar daarna niet meer?	
+	#deze hardcode hier werkt.
+	#params['sigma_center_PRF_01'].value = 0.12
 
-	shell()
 	#########################################################################################################################################################################################################################
 	#### Recreate resulting predictions and PRFs with optimized parameters
 	#########################################################################################################################################################################################################################
@@ -684,7 +680,7 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 	#### Plot results
 	#########################################################################################################################################################################################################################
 
-	if plotbool * (stats['r_squared']>0):# (np.random.randint(10)<10):#* (stats['r_squared']>0.1):#(stats['r_squared']>0.1):# * :# :#* (results['ecc'] < 3) :#:# * * randint ) #* :#* )
+	if plotbool * (stats['r_squared']>0.1):# (np.random.randint(10)<10):#* (stats['r_squared']>0.1):#(stats['r_squared']>0.1):# * :# :#* (results['ecc'] < 3) :#:# * * randint ) #* :#* )
 
 		n_TRs = n_TRs[0]
 		n_runs = int(len(time_course) / n_TRs)

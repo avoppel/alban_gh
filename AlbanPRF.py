@@ -15,7 +15,7 @@ from Tools.Projects.Project import *
 import os, sys
 from tempfile import mkdtemp
 import gc
-from sklearn.externals import joblib
+#from sklearn.externals import joblib
 from random import sample as randomsample
 from pylab import *
 import numpy as np
@@ -37,10 +37,16 @@ from nifti import *
 from math import *
 import shutil
 
-from joblib import Parallel, delayed
+#from joblib import Parallel, delayed
 from sklearn.linear_model import ARDRegression, BayesianRidge, Ridge, RidgeCV, ElasticNet, ElasticNetCV
 from skimage.morphology import disk
 from lmfit import minimize, Minimizer, Parameters, Parameter, report_fit, report_errors
+
+import pkg_resources
+pkg_resources.require("joblib==0.8.4")
+import joblib
+#from joblib import Parallel, delayed
+
 
 from IPython import embed as shell
 

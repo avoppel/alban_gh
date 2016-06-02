@@ -28,7 +28,6 @@ sys.path.append( os.environ['ANALYSIS_HOME'] )
 	
 sys.path.append( os.path.join('/home', 'voppel', 'PRF_2_analysis') )
 
-
 from PopulationReceptiveFieldMappingSession import *
 
 
