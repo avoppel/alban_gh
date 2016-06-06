@@ -12,6 +12,8 @@ To run this script headlessly and hopefully avoiding X server errors in the proc
 import os, sys, datetime
 import subprocess, logging
 
+sys.path.append( os.path.join('/home', 'voppel', 'anaconda2', 'lib', 'python2.7', 'site-packages') )
+
 import scipy as sp
 import scipy.stats as stats
 import numpy as np
@@ -25,11 +27,10 @@ this_project_folder = '/home/shared/Weibull_PRF/'
 this_raw_folder = '/home/raw_data/Weibull_PRF/'
 
 sys.path.append( os.environ['ANALYSIS_HOME'] )
-	
+
 sys.path.append( os.path.join('/home', 'voppel', 'PRF_2_analysis') )
 
 from PopulationReceptiveFieldMappingSession import *
-
 
 from Tools.Sessions import *
 from Tools.Subjects.Subject import *
@@ -40,6 +41,7 @@ from Tools.Projects.Project import *
 from AlbanPRF import *
 from AlbanPRF import WeibullPopulationReceptiveFieldMappingSession
 from ModelExperiment import *
+
 
 
 # -----------------
@@ -128,7 +130,7 @@ for which_subject in subject_initials:
 		# session.design_matrices_for_averaged_data()
 
 
-		
+		# session.combine_rois(rois=['lh.V1','rh.V1'],output_roi = 'V1')
 		## SETUP FIT PARAMETERS:
 
 
@@ -136,8 +138,8 @@ for which_subject in subject_initials:
 		n_jobs = 20 max.
 		"""
 
-		n_jobs = 1
-		mask = 'lh.V1' #or any other mask here. visible in FSL
+		n_jobs = 15
+		mask = 'V1' #or any other mask here. visible in FSL
 		postFix = ['mcf','fnirted','sgtf','psc']
 		model = 'OG'# OG or DoG
 		hrf_type = 'canonical' #'median'
@@ -153,9 +155,9 @@ for which_subject in subject_initials:
 			hrf_type = hrf_type,
 			fit_on_all_data = True,
 			slice_no = slice_no,
-			condition_index = np.array([0]),
+			#condition_index = np.array([0]),
 			##this one does them all
-			#condition_index = np.arange(10),
+			condition_index = np.arange(10),
 			)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
@@ -194,7 +196,7 @@ for which_subject in subject_initials:
 	 	# session.combine_rois(rois=['lh.V4','rh.V4'],output_roi = 'V4')
 	 	# session.combine_rois(rois=['lh.LO1','rh.LO1','lh.LO2','rh.LO2'],output_roi = 'LO')
 	 	# session.combine_rois(rois=['lh.TO1','rh.TO1','lh.TO2','rh.TO2'],output_roi = 'MT')
-	 	# # session.combine_rois(rois=['lh.V3A','rh.V3A','lh.V3B','rh.V3B'],output_roi = 'V3AB')
+	 	# session.combine_rois(rois=['lh.V3A','rh.V3A','lh.V3B','rh.V3B'],output_roi = 'V3AB')
 	 	# session.combine_rois(rois=['lh.VO1','rh.VO1','lh.VO2','rh.VO2'],output_roi = 'VO')
 	 	# session.combine_rois(rois=['lh.PHC1','rh.PHC1','lh.PHC2','rh.PHC2'],output_roi = 'PHC')
 	 	# session.combine_rois(rois=['lh.IPS0','rh.IPS0'],output_roi = 'IPS0')

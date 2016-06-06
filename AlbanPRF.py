@@ -2,15 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 albanPRF.py
+lots of functions that have been changed for the weibull PRF experiment
 """
-
-from PopulationReceptiveFieldMappingSession import *
-
-
-from Tools.Sessions import *
-from Tools.Subjects.Subject import *
-from Tools.Run import *
-from Tools.Projects.Project import *
 
 import os, sys
 from tempfile import mkdtemp
@@ -37,14 +30,13 @@ from nifti import *
 from math import *
 import shutil
 
-#from joblib import Parallel, delayed
+from joblib import Parallel, delayed
+
 from sklearn.linear_model import ARDRegression, BayesianRidge, Ridge, RidgeCV, ElasticNet, ElasticNetCV
 from skimage.morphology import disk
 from lmfit import minimize, Minimizer, Parameters, Parameter, report_fit, report_errors
 
-import pkg_resources
-pkg_resources.require("joblib==0.8.4")
-import joblib
+
 #from joblib import Parallel, delayed
 
 
@@ -52,13 +44,23 @@ from IPython import embed as shell
 
 # import toolbox funcitonality
 from Tools.Operators.ArrayOperator import *
+from Tools.Operators.EyeOperator import *
 from Tools.Operators.PhysioOperator import *
 from Tools.Operators.CommandLineOperator import *
+from Tools.Sessions import *
 from Tools.Sessions.Session import *
+from Tools.Subjects.Subject import *
+from Tools.Run import *
+from Tools.Projects.Project import *
+
 from ModelExperiment import *
 from FitPRFModel import *
 from EyeFromfMRISession import *
+from PopulationReceptiveFieldMappingSession import *
 
+import pkg_resources
+pkg_resources.require("joblib==0.8.4")
+import joblib
 
 class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMappingSession):
 
@@ -837,9 +839,7 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 
 				else:
 					this_slice_convolved_dm = []
-
 				randints_for_plot = [(np.random.randint(roi_count[these_roi_names[voxno]])<n_vox_per_ROI) for voxno in range(voxels_in_this_slice.sum())]
-				
 				self.logger.info('now fitting pRF models on slice %d, with %d voxels' % (sl, voxels_in_this_slice.sum()))
 				res = Parallel(n_jobs = np.min([n_jobs,voxels_in_this_slice.sum()]), verbose = 9)(
 							delayed(fit_PRF_on_concatenated_data)(
