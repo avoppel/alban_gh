@@ -149,23 +149,23 @@ for which_subject in subject_initials:
 
 
 
-		session.setup_fit_PRF_on_concatenated_data(
-			mask_file_name = mask, 
-			n_jobs = n_jobs, 
-			postFix = postFix, 
-			plotbool = True,
-			model = model,
-			hrf_type = hrf_type,
-			fit_on_all_data = True,
-			slice_no = slice_no,
-			condition_index = np.array([3]),
-			##this one combines all conditions and fits on them all
-			#condition_index = np.arange(10),
-			)
+		# session.setup_fit_PRF_on_concatenated_data(
+		# 	mask_file_name = mask, 
+		# 	n_jobs = n_jobs, 
+		# 	postFix = postFix, 
+		# 	plotbool = True,
+		# 	model = model,
+		# 	hrf_type = hrf_type,
+		# 	fit_on_all_data = True,
+		# 	slice_no = slice_no,
+		# 	#condition_index = np.array([9]),
+		# 	##this one combines all conditions and fits on them all
+		# 	condition_index = np.arange(10),
+		# 	)
+		
+		task_conditions = ['All_0_9','PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']
 
-		#task_conditions = ['All_0_9']
-
-		#session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
+		session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
 		# session.convert_to_surf(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['Fix'],sms=[0])
