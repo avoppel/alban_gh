@@ -41,7 +41,7 @@ from Tools.Projects.Project import *
 from AlbanPRF import *
 from AlbanPRF import WeibullPopulationReceptiveFieldMappingSession
 from ModelExperiment import *
-
+import time
 
 
 # -----------------
@@ -139,8 +139,8 @@ for which_subject in subject_initials:
 		n_jobs = 20 max.
 		"""
 
-		n_jobs = 18
-		mask = 'LO' #or any other mask here. visible in FSL
+		n_jobs = 20
+		mask = 'all_visual' #or any other mask here. visible in FSL
 		postFix = ['mcf','fnirted','sgtf','psc']
 		model = 'OG'# OG or DoG
 		hrf_type = 'canonical' #'median'
@@ -149,6 +149,7 @@ for which_subject in subject_initials:
 
 
 
+		time.sleep(14400)
 
 		session.setup_fit_PRF_on_concatenated_data(
 			mask_file_name = mask, 
@@ -161,18 +162,17 @@ for which_subject in subject_initials:
 			slice_no = slice_no,
 			#condition_index = np.array([0]),
 			#condition_index = np.arange(5),
-			condition_index = np.arange(5,10)
+			#condition_index = np.arange(5,10)
 			##this one combines all conditions and fits on them all
-			#condition_index = np.arange(10),
+			condition_index = np.arange(10),
 			)
 		
-		#task_conditions = ['All_0_9','All_0_4','All_5_9','PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']
+		#task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']
+		#task_conditions = ['All_0_4','All_5_9','All_0_9']
+		#task_conditions = ['All_0_9']
 
-		# task_conditions = ['All_0_4','All_5_9']
-		# #task_conditions = ['All_5_9']
 
-
-		# session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
+		#session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
 		# session.convert_to_surf(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['Fix'],sms=[0])
@@ -203,6 +203,13 @@ for which_subject in subject_initials:
 		# session.combine_predictions_concatenated_data(hrf_type,model,postFix,mask)
 
 		## OPTIONAL OTHERS
+
+		# session.combine_rois(rois=['lh.V1','rh.V1','lh.V2v','rh.V2d','lh.V2d','rh.V2v',		#V1 V2
+		# 							'lh.V3v','rh.V3d','lh.V3d','rh.V3v','lh.V4','rh.V4',	#V3 V4
+		# 							'lh.LO1','rh.LO1','lh.LO2','rh.LO2',					#LO
+		# 							'lh.TO1','rh.TO1','lh.TO2','rh.TO2',					#MT
+		# 							'lh.VO1','rh.VO1','lh.VO2','rh.VO2'						#VO
+		# 							],output_roi = 'all_visual')
 
 		# session.combine_rois(rois=['lh.V1','rh.V1'],output_roi = 'V1')
 	 	# session.combine_rois(rois=['lh.V2v','rh.V2d','lh.V2d','rh.V2v'],output_roi = 'V2')

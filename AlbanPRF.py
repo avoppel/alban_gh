@@ -89,9 +89,9 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 		#self.task_names = {'PRF':['Color', 'Speed', 'Fix', 'Fix_no_stim'],'Mapper':['fix_no_stim','no_color_no_speed','yes_color_no_speed','no_color_yes_speed','yes_color_yes_speed']}
 		self.task_names = {'PRF':['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']}
 
-		self.n_TR = {'PRF':765,'Mapper':510}
+		self.n_TR = {'PRF':300,'Mapper':510}
 
-		# wat doet die? self.n_TR?
+		# wat doet die? self.n_TR? was 765; heb er 300 van gemaakt
 		#self.run_types = ['PRF','Mapper']
 		self.run_types = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'] #,'T2_anat','T1']
 
