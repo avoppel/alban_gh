@@ -52,9 +52,9 @@ import time
 # -----------------
 
 # subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
-subject_initials = ['DvE']# 'JWdG']
+subject_initials = ['MK']
 # subjects = ['DvE', 'JWdG', 'MK', 'NM']
-subjects = ['DvE']#, 'JWdG']
+subjects = ['MK']
 run_arrays = []
 projects = []
 session_dates = []
@@ -81,14 +81,14 @@ for which_subject in subject_initials:
 		# session.motionCorrectFunctionals(use_ref_file=False)
 		# session.create_moco_check_gifs()
 
-		# ## NOW, LET'S FLIRT ALL MEAN MOTION CORRECTED VOLUMES TO THE SESSIONS T2 
+		## NOW, LET'S FLIRT ALL MEAN MOTION CORRECTED VOLUMES TO THE SESSIONS T2 
 		# # SO THAT WE CAN VISUALLY CHECK WHICH ONE HAS THE LEAST B0 DISTORTION
-		# session.flirt_mean_moco_to_session_T2()
-		# session.create_B0_distortion_check_gifs()
+		session.flirt_mean_moco_to_session_T2()
+		session.create_B0_distortion_check_gifs()
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW REGISTER TO THE FREESURFER T1
-		# session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
+		#session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
 		# original version: #	session.registerSession(input_type='target_meanvol_moco_epi')
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
@@ -105,9 +105,9 @@ for which_subject in subject_initials:
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','fnirted2targetEPI'])
 
 		# # # NOW COMBINE MOCO / FLIRT / FNIRT AND APPLY TO ALL DATA
-		# # session.applywarp_to_moco_data()
-		# # session.create_mean_vol(postFix=['mcf','fnirted'])
-		# # session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
+		# session.applywarp_to_moco_data()
+		# session.create_mean_vol(postFix=['mcf','fnirted'])
+		# session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
 
 		# # ## MASKS
 		# session.dilate_and_move_func_bet_mask()
@@ -115,9 +115,9 @@ for which_subject in subject_initials:
 
 
 		# ## SGTF
-	 # 	for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
-		# 	session.rescaleFunctionals(condition=condition,operations = ['sgtf'],filterFreqs={'highpass':120}, funcPostFix = ['mcf','fnirted'], mask_file = os.path.join(session.stageFolder('processed/mri/masks/anat'), 'bet_mask_dilated.nii.gz'))
-		# 	session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
+	 	# for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
+			# session.rescaleFunctionals(condition=condition,operations = ['sgtf'],filterFreqs={'highpass':120}, funcPostFix = ['mcf','fnirted'], mask_file = os.path.join(session.stageFolder('processed/mri/masks/anat'), 'bet_mask_dilated.nii.gz'))
+			# session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
 
 
 		## Design Matrices
@@ -129,14 +129,22 @@ for which_subject in subject_initials:
 
 		# session.design_matrices_for_averaged_data()
 
+		## Create masks; see down below by other functions for more
+
+		# session.combine_rois(rois=['lh.V1','rh.V1','lh.V2v','rh.V2d','lh.V2d','rh.V2v',		#V1 V2
+		# 					'lh.V3v','rh.V3d','lh.V3d','rh.V3v','lh.V4','rh.V4',				#V3 V4
+		# 					'lh.LO1','rh.LO1','lh.LO2','rh.LO2',								#LO
+		# 					'lh.TO1','rh.TO1','lh.TO2','rh.TO2',								#MT
+		# 					'lh.VO1','rh.VO1','lh.VO2','rh.VO2'									#VO
+		# 					],output_roi = 'all_visual')
 
 		# session.combine_rois(rois=['lh.V1','rh.V1'],output_roi = 'V1')
-	 	#session.combine_rois(rois=['lh.LO1','rh.LO1','lh.LO2','rh.LO2'],output_roi = 'LO')
-		## SETUP FIT PARAMETERS:
 
+		## SETUP FIT PARAMETERS:
 
 		"""
 		n_jobs = 20 max.
+		snachts - doe maar -1.
 		"""
 
 		n_jobs = 20
@@ -150,7 +158,7 @@ for which_subject in subject_initials:
 
 		#sleep function; to start fit procedure after X seconds.
 
-		#time.sleep(14400)
+		# time.sleep(13000)
 
 		# session.setup_fit_PRF_on_concatenated_data(
 		# 	mask_file_name = mask, 
@@ -170,10 +178,10 @@ for which_subject in subject_initials:
 		
 		#task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']
 		#task_conditions = ['All_0_4','All_5_9','All_0_9']
-		#task_conditions = ['All_0_9']
+		# task_conditions = ['All_0_9']
 
+		# session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
 
-		#session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
 		# session.convert_to_surf(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['Fix'],sms=[0])
@@ -471,7 +479,7 @@ for which_subject in subject_initials:
 		sj_session = 'JWdG_050814'
 		
 		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
-													   presentProject, presentSubject, this_project_folder, targetEPIID=9)
+													   presentProject, presentSubject, this_project_folder, targetEPIID=2)
 		
 		try:
 			os.mkdir(os.path.join(this_project_folder, 'data', initials))
@@ -486,156 +494,157 @@ for which_subject in subject_initials:
 		subject_run_array = [
 			# 10 runs met de PRF taak, 1 run T2, 1 run T1.
 			#physiology 1 t/m 6 missing
+
 			{
 				'ID': 1, 'scanType': 'epi_bold', 'condition': 'PRF_06', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF01_SENSE_4_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_01_cat_06_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_01_cat_06_no_stim.txt')],
-				# 'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				# 'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				# ''),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG1.edf'), 
 				'thisSessionT2ID':12,	
 			},
 			{
 				'ID': 2, 'scanType': 'epi_bold', 'condition': 'PRF_03', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF02_SENSE_5_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_02_cat_03_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_02_cat_03_no_stim.txt')],
-				# 'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				# 'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				# ''),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG2.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 3, 'scanType': 'epi_bold', 'condition': 'PRF_07', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF03_SENSE_6_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_03_cat_07_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_03_cat_07_no_stim.txt')],
-				# 'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				# 'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				# ''),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG3.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 4, 'scanType': 'epi_bold', 'condition': 'PRF_08', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF04_SENSE_7_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_04_cat_08_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_04_cat_08_no_stim.txt')],
-				# 'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				# 'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				# ''),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG4.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 5, 'scanType': 'epi_bold', 'condition': 'PRF_05', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF05_SENSE_9_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_05_cat_05_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_05_cat_05_no_stim.txt')],
-				# 'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				# 'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				# ''),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG5.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 6, 'scanType': 'epi_bold', 'condition': 'PRF_01', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF06_SENSE_10_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_06_cat_01_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_06_cat_01_no_stim.txt')],
-				# 'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				# 'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				# ''),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG6.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 7, 'scanType': 'epi_bold', 'condition': 'PRF_02', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF07_SENSE_11_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_07_cat_02_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_07_cat_02_no_stim.txt')],
-				'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'JWdG2_pRF07.log'),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG7.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 8, 'scanType': 'epi_bold', 'condition': 'PRF_04', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF08_SENSE_13_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_08_cat_04_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_08_cat_04_no_stim.txt')],
-				'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'JWdG2_pRF08.log'),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG8.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_09', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF09_SENSE_14_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_09_cat_09_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_09_cat_09_no_stim.txt')],
-				'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'JWdG2_pRF09.log'),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG9.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 10, 'scanType': 'epi_bold', 'condition': 'PRF_10', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_pRF10_SENSE_15_1.nii.gz'),
-				'rawBehaviorFile': [os.path.join(this_raw_folder, sj_session, 'gedrag',
+				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_10_cat_10_stim.txt'),
-									os.path.join(this_raw_folder, sj_session, 'gedrag',
+									os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 												 'JWdG_050814_run_10_cat_10_no_stim.txt')],
-				'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'JWdG2_pRF10.log'),
-				'eyeLinkFilePath': os.path.join(this_raw_folder, sj_session, 'eye',
+				'eyeLinkFilePath': os.path.join(this_raw_folder,initials, sj_session, 'eye',
 				'JWdG10.edf'), 
 				'thisSessionT2ID':12,
 			},
 			{
 				'ID': 11, 'scanType': 'T1', 'condition': 'mapper', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_sT13DTFE_P25_S2_3m_SENSE_12_1.nii.gz'),
-				'physiologyFile': os.path.join(this_raw_folder, sj_session, 'hr',
+				'physiologyFile': os.path.join(this_raw_folder,initials, sj_session, 'hr',
 				'JWdG2_T1.log')
 			},
 			{
 				'ID': 12, 'scanType': 'T2', 'condition': 'mapper', 'session': 1,
-				'rawDataFilePath': os.path.join(this_raw_folder, sj_session, 'mri',
+				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
 				'JWdG_2_WIP_T2W_RetMap_125_CLEAR_8_1.nii.gz')
 			}
 		]
