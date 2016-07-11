@@ -598,7 +598,7 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 
 
 
-	def setup_fit_PRF_on_concatenated_data(self, mask_file_name = 'bet_mask', postFix = [], n_jobs = 1, fit_on_all_data=True,n_slices = 30,
+	def setup_fit_PRF_on_concatenated_data(self, mask_file_name = 'bet_mask', postFix = [], n_jobs = 1, fit_on_all_data=True,n_slices = 19,
 				n_vox_per_ROI=100,plotbool=False, model='OG',hrf_type='canonical',n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,r_squared_threshold=0.1,
 				use_shared_memory = False,slice_no=0,change_type='all_data',run_num=0,condition_index=0,all_conditions=np.array(['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])):
 		"""

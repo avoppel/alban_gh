@@ -44,17 +44,10 @@ from ModelExperiment import *
 import time
 
 
-# -----------------
-# Comments / to do
-# alle physlog kunnen weg, gaan we niets mee doen. (nog steeds doen? volgens mij hebben alle runs deze data wel, tot nu toe)
-# raw behavior zat niet in alle runs; wel in de goede. Toch weg doen?(idem, zie boven?)
-# check dat ook de .txt met logfiles meegenomen worden uit de raw mappen. 
-# -----------------
-
 # subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
-subject_initials = ['MK']
+subject_initials = ['MK','NM']
 # subjects = ['DvE', 'JWdG', 'MK', 'NM']
-subjects = ['MK']
+subjects = ['MK','NM']
 run_arrays = []
 projects = []
 session_dates = []
@@ -81,19 +74,19 @@ for which_subject in subject_initials:
 		# session.motionCorrectFunctionals(use_ref_file=False)
 		# session.create_moco_check_gifs()
 
-		## NOW, LET'S FLIRT ALL MEAN MOTION CORRECTED VOLUMES TO THE SESSIONS T2 
-		# # SO THAT WE CAN VISUALLY CHECK WHICH ONE HAS THE LEAST B0 DISTORTION
-		session.flirt_mean_moco_to_session_T2()
-		session.create_B0_distortion_check_gifs()
+		# NOW, LET'S FLIRT ALL MEAN MOTION CORRECTED VOLUMES TO THE SESSIONS T2 
+		# SO THAT WE CAN VISUALLY CHECK WHICH ONE HAS THE LEAST B0 DISTORTION
+		# session.flirt_mean_moco_to_session_T2()
+		# session.create_B0_distortion_check_gifs()
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW REGISTER TO THE FREESURFER T1
-		#session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
+		# session.registerSession(input_type='target_meanvol_moco_epi', MNI = False)
 		# original version: #	session.registerSession(input_type='target_meanvol_moco_epi')
 
 		# ## WITH A TARGET EPI VOLUME SELECTED AND MARKED IN THE SUBJECT DEFINITION
 		# # WE CAN NOW FLIRT ALL MEAN MOTION CORRECTED EPIS TO THAT EPI
-		# # AND CREATE VISUAL SANITY CHECKS
+		# # # AND CREATE VISUAL SANITY CHECKS
 		
 		# session.flirt_mean_moco_to_mean_target_EPI()
 		# session.check_EPI_alignment(postFix=['mcf','meanvol','NB','flirted2targetEPI'])
@@ -109,12 +102,21 @@ for which_subject in subject_initials:
 		# session.create_mean_vol(postFix=['mcf','fnirted'])
 		# session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
 
+
+		"""
+		masks nog niet gerunt voor MK en NM! Freesurfer andere map laten pakken, V1 en LO bestaan misschien al?
+		bovenste createMasks maakt deze van de base map, niet van de retmap_PRF.
+
+		"""
 		# # ## MASKS
 		# session.dilate_and_move_func_bet_mask()
+		#session.create_dilated_cortical_mask()
+		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = [''], cortex = False)
+
 		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = ['retmap_PRF'], cortex = False)
 
 
-		# ## SGTF
+		## SGTF
 	 	# for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
 			# session.rescaleFunctionals(condition=condition,operations = ['sgtf'],filterFreqs={'highpass':120}, funcPostFix = ['mcf','fnirted'], mask_file = os.path.join(session.stageFolder('processed/mri/masks/anat'), 'bet_mask_dilated.nii.gz'))
 			# session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
@@ -124,13 +126,14 @@ for which_subject in subject_initials:
 
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
 		# 					task_conditions=['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10'])
+
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
 		#  					task_conditions=['PRF_04'])
 
 		# session.design_matrices_for_averaged_data()
 
-		## Create masks; see down below by other functions for more
 
+		## Create masks; see down below by other functions for more
 		# session.combine_rois(rois=['lh.V1','rh.V1','lh.V2v','rh.V2d','lh.V2d','rh.V2v',		#V1 V2
 		# 					'lh.V3v','rh.V3d','lh.V3d','rh.V3v','lh.V4','rh.V4',				#V3 V4
 		# 					'lh.LO1','rh.LO1','lh.LO2','rh.LO2',								#LO
@@ -138,27 +141,30 @@ for which_subject in subject_initials:
 		# 					'lh.VO1','rh.VO1','lh.VO2','rh.VO2'									#VO
 		# 					],output_roi = 'all_visual')
 
-		# session.combine_rois(rois=['lh.V1','rh.V1'],output_roi = 'V1')
+		# session.combine_rois(rois=['lh.V1','rh.V1','lh.V2','rh.V2',							#V1 V2
+		# 					'lh.MT','rh.MT'														#MT
+		# 	],output_roi = 'some_visual')
+
+		# session.combine_rois(rois=['lh.cortex','rh.cortex',									#cortex
+		# 	],output_roi = 'cortex')
 
 		## SETUP FIT PARAMETERS:
 
 		"""
 		n_jobs = 20 max.
-		snachts - doe maar -1.
+		snachts - doe misschien -1 ?
 		"""
 
-		n_jobs = 20
-		mask = 'all_visual' #or any other mask here. visible in FSL
+		n_jobs = 10
+		mask = 'cortex_dilated_mask' #or any other mask here. visible in FSL
 		postFix = ['mcf','fnirted','sgtf','psc']
 		model = 'OG'# OG or DoG
 		hrf_type = 'canonical' #'median'
 		#None loopt alle slices.
 		slice_no = None
 
-
 		#sleep function; to start fit procedure after X seconds.
-
-		# time.sleep(13000)
+		#time.sleep(7200)
 
 		# session.setup_fit_PRF_on_concatenated_data(
 		# 	mask_file_name = mask, 
@@ -177,10 +183,10 @@ for which_subject in subject_initials:
 		# 	)
 		
 		#task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']
-		#task_conditions = ['All_0_4','All_5_9','All_0_9']
-		# task_conditions = ['All_0_9']
+		#task_conditions = ['All_0_4','All_5_9']
+		task_conditions = ['All_0_9']
 
-		# session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
+		session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
 
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
@@ -880,7 +886,7 @@ for which_subject in subject_initials:
 		sj_session = 'NM_220714'
 		
 		subject_session = WeibullPopulationReceptiveFieldMappingSession(sessionID, sessionDate, 
-													   presentProject, presentSubject, this_project_folder, targetEPIID=3)
+													   presentProject, presentSubject, this_project_folder, targetEPIID=7)
 		
 		try:
 			os.mkdir(os.path.join(this_project_folder, 'data', initials))
@@ -1007,7 +1013,7 @@ for which_subject in subject_initials:
 			{
 				'ID': 9, 'scanType': 'epi_bold', 'condition': 'PRF_04', 'session': 1,
 				'rawDataFilePath': os.path.join(this_raw_folder,initials, sj_session, 'mri',
-				'NM_WIP_pRF08_SENSE_15_1.nii.gz'),
+				'NM_WIP_pRF09_SENSE_15_1.nii.gz'),													#origineel - gaf error - 'NM_WIP_pRF08_SENSE_15_1.nii.gz'),
 				'rawBehaviorFile': [os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
 							  					 'NM_220714_run_09_cat_04_stim.txt'),
 								    os.path.join(this_raw_folder,initials, sj_session, 'gedrag',
