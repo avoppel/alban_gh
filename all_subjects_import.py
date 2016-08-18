@@ -44,10 +44,10 @@ from ModelExperiment import *
 import time
 
 
-# subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
-subject_initials = ['MK','NM']
-# subjects = ['DvE', 'JWdG', 'MK', 'NM']
-subjects = ['MK','NM']
+subject_initials = ['DvE', 'JWdG', 'MK', 'NM']
+# subject_initials = ['NM']
+subjects = ['DvE', 'JWdG', 'MK', 'NM']
+# subjects = ['NM']
 run_arrays = []
 projects = []
 session_dates = []
@@ -103,23 +103,18 @@ for which_subject in subject_initials:
 		# session.check_EPI_alignment(postFix=['mcf','fnirted','meanvol'])
 
 
-		"""
-		masks nog niet gerunt voor MK en NM! Freesurfer andere map laten pakken, V1 en LO bestaan misschien al?
-		bovenste createMasks maakt deze van de base map, niet van de retmap_PRF.
-
-		"""
 		# # ## MASKS
 		# session.dilate_and_move_func_bet_mask()
-		#session.create_dilated_cortical_mask()
-		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = [''], cortex = False)
-
+		# session.create_dilated_cortical_mask()
 		# session.createMasksFromFreeSurferLabels(annot = False, annotFile = 'aparc.a2009s', labelFolders = ['retmap_PRF'], cortex = False)
 
 
 		## SGTF
-	 	# for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
+	 	for condition in ['PRF_01']:
+	 	#for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
+
 			# session.rescaleFunctionals(condition=condition,operations = ['sgtf'],filterFreqs={'highpass':120}, funcPostFix = ['mcf','fnirted'], mask_file = os.path.join(session.stageFolder('processed/mri/masks/anat'), 'bet_mask_dilated.nii.gz'))
-			# session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
+			session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
 
 
 		## Design Matrices
@@ -141,12 +136,9 @@ for which_subject in subject_initials:
 		# 					'lh.VO1','rh.VO1','lh.VO2','rh.VO2'									#VO
 		# 					],output_roi = 'all_visual')
 
-		# session.combine_rois(rois=['lh.V1','rh.V1','lh.V2','rh.V2',							#V1 V2
-		# 					'lh.MT','rh.MT'														#MT
-		# 	],output_roi = 'some_visual')
-
-		# session.combine_rois(rois=['lh.cortex','rh.cortex',									#cortex
-		# 	],output_roi = 'cortex')
+		# session.combine_rois(rois=['lh.V1','rh.V1',											#V1
+		# 					'lh.LO1','rh.LO1','lh.LO2','rh.LO2',								#LO
+		# 					],output_roi = 'V1_LO')
 
 		## SETUP FIT PARAMETERS:
 
@@ -155,8 +147,9 @@ for which_subject in subject_initials:
 		snachts - doe misschien -1 ?
 		"""
 
-		n_jobs = 10
-		mask = 'cortex_dilated_mask' #or any other mask here. visible in FSL
+		n_jobs = 20
+		#mask = 'V1_LO' #or any other mask here. check in FSL
+		mask = 'all_visual' #or any other mask here. check in FSL
 		postFix = ['mcf','fnirted','sgtf','psc']
 		model = 'OG'# OG or DoG
 		hrf_type = 'canonical' #'median'
@@ -165,34 +158,41 @@ for which_subject in subject_initials:
 
 		#sleep function; to start fit procedure after X seconds.
 		#time.sleep(7200)
-
-		# session.setup_fit_PRF_on_concatenated_data(
-		# 	mask_file_name = mask, 
-		# 	n_jobs = n_jobs, 
-		# 	postFix = postFix, 
-		# 	plotbool = True,
-		# 	model = model,
-		# 	hrf_type = hrf_type,
-		# 	fit_on_all_data = True,
-		# 	slice_no = slice_no,
-		# 	#condition_index = np.array([0]),
-		# 	#condition_index = np.arange(5),
-		# 	#condition_index = np.arange(5,10)
-		# 	##this one combines all conditions and fits on them all
-		# 	condition_index = np.arange(10),
-		# 	)
 		
-		#task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']
-		#task_conditions = ['All_0_4','All_5_9']
-		task_conditions = ['All_0_9']
+		#quick and dirty to do various conditions in a loop
+		# for prfnumber in range(10):
+			
 
-		session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
+		# 	session.setup_fit_PRF_on_concatenated_data(
+		# 		mask_file_name = mask, 
+		# 		n_jobs = n_jobs, 
+		# 		postFix = postFix, 
+		# 		plotbool = True,
+		# 		model = model,
+		# 		hrf_type = hrf_type,
+		# 		fit_on_all_data = False,
+		# 		slice_no = slice_no,
+		# 		condition_index = np.array([prfnumber]),
+		# 		#condition_index = np.arange(1),
+		# 		#condition_index = np.arange(5,10)
+		# 		##this one combines all conditions and fits on them all
+		# 		#condition_index = np.arange(10),
+		# 		)
+		
+		# task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10','All_0_9']
+		# task_conditions = ['All_0_4','All_5_9']
+		# # #task_conditions = ['All_0_9']
+
+		# session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
 
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
-		# session.convert_to_surf(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['Fix'],sms=[0])
-		# session.combine_surfaces(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['Fix'],sms=[0])
 
+		#session.convert_to_surf(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['All_0_9'],sms=[0])
+		#session.combine_surfaces(mask_file = mask,postFix=postFix,model=model,hrf_type=hrf_type,depth_min=-1.0,depth_max=2.0,depth_step=0.25,task_conditions=['All_0_9'],sms=[0])
+
+		# session.labels_to_annot(input_folder_names=['retmap_PRF'],output_file_name = 'all_labels')
+		
 		# session.design_matrices_for_concatenated_data(n_pixel_elements_raw = 101,n_pixel_elements_convolved=31,
 		# 	change_type=change_type,run_num=run_num,task_conditions=['Fix','Color','Speed'])
 		# r_squared_threshold = 0.0005 # threshold for which voxels to fit in the non-ALL condition

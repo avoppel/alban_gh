@@ -82,6 +82,7 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 		self.orientations = [0,45,90,135,180,225,270,315]
 		self.hrf_shape = 'doubleGamma'
 		self.TR = 1.594
+		#self.TR = 1.0
 		for k,v in kwargs.items():
 			setattr(self, k, v)
 		# results_frames = {'real_polar':0,'polar':1,'delta_amplitude':2,'ecc':3,'xo':4,'yo':5,'surround_size':6,'amp_center':7,'imag_polar':8,'amp_surround':9,'sigma_surround':10,'SI':11,'delta_sigma':12,'sigma_center':13,'fwhm':14,'real_eccen':15,'imag_eccen':16}
@@ -628,7 +629,7 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 			stats_frames = picklefile['stats_frames']
 			results_frames = picklefile['results_frames']
 			stats = NiftiImage(os.path.join(self.stageFolder('processed/mri/PRF/'), 'corrs_' + mask_file_name + '_' + '_'.join(postFix)  + '_' + 
-				model + '_All_hrf_' + hrf_type+ '.nii.gz')).data[stats_frames['r_squared'],:]
+				model + '_All_0_9_hrf_' + hrf_type+ '.nii.gz')).data[stats_frames['r_squared'],:]
 			cortex_mask_size = cortex_mask.sum()
 			cortex_mask *= (stats>r_squared_threshold)
 			stat_mask_size = cortex_mask.sum()
@@ -651,10 +652,6 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 		n_slices = np.min(NiftiImage(this_nii_file).extent)
 		all_data = np.vstack(all_data)
 		self.logger.info('Loading data lasted %.3f seconds'%(t.time()-t0))
-
-		# the v1 mask has 847 voxels as true
-		#TRs of each file = 300, 10x 300 = 3000
-		#all_data.shape = 3000, 847
 
 		# for ri,r in enumerate([self.runList[i] for i in self.conditionDict['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']]): 
 		# 	this_nii_file = self.runFile(stage = 'processed/mri', run = r, postFix=postFix)
@@ -715,7 +712,9 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 		else:
 			# load in the results from the All condition
 			all_params = NiftiImage(os.path.join(self.stageFolder('processed/mri/PRF/'), 'results_' + mask_file_name + '_' + '_'.join(postFix)  + '_' + model + 
-				'_All_%d_%d_hrf_'%(condition_index[0],condition_index[-1])+ hrf_type+ '.nii.gz')).data[:,cortex_mask]
+				'_All_0_9_hrf_'+ hrf_type+ '.nii.gz')).data[:,cortex_mask]
+			if len(condition_index) ==1:
+				task_conditions = all_conditions[condition_index]
 			# # put all_params in shared mem
 			# filename = os.path.join(tempdir, 'all_params.dat')
 			# fp = np.memmap(filename, dtype='float32', mode='write', shape=all_params.shape)

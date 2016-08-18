@@ -561,11 +561,6 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 
 	# optimize parameters
 	minimize(residual, params, args=(), kws={},method='powell')
-	#hier gaat iets een beetje fout? lijkt alsof de return statement van residuals niet meegenomen wordt?
-	#iig is de value van sigma_center weer 0.1
-	#de functie residual hierboven verandert 1x iets aan het cijfer, maar daarna niet meer?	
-	#deze hardcode hier werkt.
-	#params['sigma_center_PRF_01'].value = 0.12
 
 	#########################################################################################################################################################################################################################
 	#### Recreate resulting predictions and PRFs with optimized parameters
@@ -680,16 +675,21 @@ def fit_PRF_on_concatenated_data(data_shared,voxels_in_this_slice,n_TRs,n_slices
 	#### Plot results
 	#########################################################################################################################################################################################################################
 
-	if plotbool * (stats['r_squared']>0.1):# (np.random.randint(10)<10):#* (stats['r_squared']>0.1):#(stats['r_squared']>0.1):# * :# :#* (results['ecc'] < 3) :#:# * * randint ) #* :#* )
+	if plotbool * (stats['r_squared']>0.4):# (np.random.randint(10)<10):#* (stats['r_squared']>0.1):#(stats['r_squared']>0.1):# * :# :#* (results['ecc'] < 3) :#:# * * randint ) #* :#* )
 
 		n_TRs = n_TRs[0]
 		n_runs = int(len(time_course) / n_TRs)
 		if fit_on_all_data:
 			plot_conditions = ['Ridge',conditions[0]]
 		else:
-			plot_conditions = conditions + ['All_fit']
+			plot_conditions = ['All_fit',conditions[0]]
+			#plot_conditions = conditions[0] + ['All_fit']
 		plot_dir = os.path.join(plotdir, '%s'%roi)
-		if not os.path.isdir(plot_dir): os.mkdir(plot_dir)
+		if not os.path.isdir(plot_dir): 
+			try:
+				os.mkdir(plot_dir)
+			except:
+				pass
 
 		f=pl.figure(figsize=(20,8)); rowi = (n_runs+4)
 
