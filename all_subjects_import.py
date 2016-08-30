@@ -110,11 +110,10 @@ for which_subject in subject_initials:
 
 
 		## SGTF
-	 	for condition in ['PRF_01']:
 	 	#for condition in ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10']:
 
 			# session.rescaleFunctionals(condition=condition,operations = ['sgtf'],filterFreqs={'highpass':120}, funcPostFix = ['mcf','fnirted'], mask_file = os.path.join(session.stageFolder('processed/mri/masks/anat'), 'bet_mask_dilated.nii.gz'))
-			session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
+			# session.rescaleFunctionals(condition=condition,operations = ['percentsignalchange'], funcPostFix = ['mcf','fnirted','sgtf'])
 
 
 		## Design Matrices
@@ -148,7 +147,7 @@ for which_subject in subject_initials:
 		"""
 
 		n_jobs = 20
-		#mask = 'V1_LO' #or any other mask here. check in FSL
+		mask = 'V1_LO' #or any other mask here. check in FSL
 		mask = 'all_visual' #or any other mask here. check in FSL
 		postFix = ['mcf','fnirted','sgtf','psc']
 		model = 'OG'# OG or DoG
@@ -163,25 +162,26 @@ for which_subject in subject_initials:
 		# for prfnumber in range(10):
 			
 
-		# 	session.setup_fit_PRF_on_concatenated_data(
-		# 		mask_file_name = mask, 
-		# 		n_jobs = n_jobs, 
-		# 		postFix = postFix, 
-		# 		plotbool = True,
-		# 		model = model,
-		# 		hrf_type = hrf_type,
-		# 		fit_on_all_data = False,
-		# 		slice_no = slice_no,
-		# 		condition_index = np.array([prfnumber]),
-		# 		#condition_index = np.arange(1),
-		# 		#condition_index = np.arange(5,10)
-		# 		##this one combines all conditions and fits on them all
-		# 		#condition_index = np.arange(10),
-		# 		)
+		# session.setup_fit_PRF_on_concatenated_data(
+		# 	mask_file_name = mask, 
+		# 	n_jobs = n_jobs, 
+		# 	postFix = postFix, 
+		# 	plotbool = True,
+		# 	model = model,
+		# 	hrf_type = hrf_type,
+		# 	fit_on_all_data = False,
+		# 	slice_no = slice_no,
+		# 	#condition_index = np.array([prfnumber]),
+		# 	condition_index = np.array([2,4]),
+		# 	# condition_index = np.arange(5,10)
+		# 	##this one combines all conditions and fits on them all
+		# 	#condition_index = np.arange(10),
+		# 	)
 		
-		# task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10','All_0_9']
-		# task_conditions = ['All_0_4','All_5_9']
-		# # #task_conditions = ['All_0_9']
+		# task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10',
+		# 	'All_1_4','All_2_3', 'All_0_4','All_5_9', 'All_0_9','All_1_3','All_2_4']
+		# # # # task_conditions = ['All_0_4','All_5_9']
+		# # # # # #task_conditions = ['All_0_9']
 
 		# session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
 

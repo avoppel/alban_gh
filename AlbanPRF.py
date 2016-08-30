@@ -699,7 +699,6 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 		roi_count = {}
 		for roi in np.unique(roi_names):
 			roi_count[roi] = np.size(roi_names[roi_names==roi]) 
-
 		if fit_on_all_data:
 			#task_conditions = ['All']
 			# task_conditions = ['Aĺl']#
@@ -715,6 +714,9 @@ class WeibullPopulationReceptiveFieldMappingSession(PopulationReceptiveFieldMapp
 				'_All_0_9_hrf_'+ hrf_type+ '.nii.gz')).data[:,cortex_mask]
 			if len(condition_index) ==1:
 				task_conditions = all_conditions[condition_index]
+			else:
+				task_conditions = ['All_%d_%d'%(condition_index[0],condition_index[-1])]
+
 			# # put all_params in shared mem
 			# filename = os.path.join(tempdir, 'all_params.dat')
 			# fp = np.memmap(filename, dtype='float32', mode='write', shape=all_params.shape)
