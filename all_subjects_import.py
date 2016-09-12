@@ -178,12 +178,12 @@ for which_subject in subject_initials:
 		# 	#condition_index = np.arange(10),
 		# 	)
 		
-		# task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10',
-		# 	'All_1_4','All_2_3', 'All_0_4','All_5_9', 'All_0_9','All_1_3','All_2_4']
-		# # # # task_conditions = ['All_0_4','All_5_9']
-		# # # # # #task_conditions = ['All_0_9']
+		task_conditions = ['PRF_01','PRF_02','PRF_03','PRF_04','PRF_05','PRF_06','PRF_07','PRF_08','PRF_09','PRF_10',
+			'All_0_4','All_5_9', 'All_0_9', 'All_3_4', 'All_1_2', 'All_1_3', 'All_2_4']
+		# # # # # # task_conditions = ['All_0_4','All_5_9']
+		# # # # # # # #task_conditions = ['All_0_9']
 
-		# session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
+		session.mask_stats_to_hdf(mask_file = mask , postFix = postFix, task_conditions = task_conditions,model=model,hrf_type=hrf_type)
 
 
 		# session.combine_seperate_slice_niftis(mask,postFix,model,task_conditions=['All'],hrf_type=hrf_type)
